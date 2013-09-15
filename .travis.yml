@@ -8,4 +8,4 @@ compiler:
   - clang
   - gcc
 
-script: cd build && cmake .. && make && make test
+script: ls -l /usr/include/jsoncpp/* && ls -l /usr/lib/libjson* && cd build && cmake .. && make && make test
