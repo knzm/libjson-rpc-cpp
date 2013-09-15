@@ -8,9 +8,11 @@
 #  also defined, but not for general use are
 #  JSONCPP_LIBRARY, where to find the jsoncpp library.
 
-FIND_PATH(JSONCPP_INCLUDE_DIR jsoncpp/json/json.h
-/usr/local/include
-/usr/include
+FIND_PATH(JSONCPP_INCLUDE_DIR json.h
+/usr/local/include/jsoncpp/json
+/usr/local/include/jsoncpp
+/usr/include/jsoncpp
+/usr/include/jsoncpp/json
 )
 
 SET(JSONCPP_NAMES "${JSONCPP_NAMES} libjsoncpp.so")
