@@ -11,7 +11,7 @@
 #define STUBGENERATOR_H
 
 #include <string>
-#include <jsonrpc/procedure.h>
+#include <jsonrpc/common/procedure.h>
 
 namespace jsonrpc
 {

@@ -10,7 +10,7 @@
 #include "serverstubgenerator.h"
 #include "servertemplate.h"
 
-#include <jsonrpc/specificationwriter.h>
+#include <jsonrpc/common/specificationwriter.h>
 #include <sstream>
 #include <algorithm>
 

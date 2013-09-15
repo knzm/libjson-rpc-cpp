@@ -12,8 +12,8 @@
 #include <iostream>
 
 #include "server.h"
-#include <jsonrpc/procedure.h>
-#include <jsonrpc/specificationwriter.h>
+#include <jsonrpc/client.h>
+#include <jsonrpc/common/specificationwriter.h>
 
 using namespace jsonrpc;
 using namespace std;

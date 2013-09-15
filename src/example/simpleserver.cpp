@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <string>
 #include <iostream>
-#include <jsonrpc/rpc.h>
+#include <jsonrpc/server.h>
 
 using namespace jsonrpc;
 using namespace std;

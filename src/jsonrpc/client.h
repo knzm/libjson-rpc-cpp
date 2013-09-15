@@ -1,40 +1,17 @@
-/*************************************************************************
- * libjson-rpc-cpp
- *************************************************************************
- * @file    client.h
- * @date    03.01.2013
- * @author  Peter Spiess-Knafl <peter.knafl@gmail.com>
- * @license See attached LICENSE.txt
- ************************************************************************/
+/**
+ * @file json-rpc.h
+ * @date 02.08.2011
+ * @author Peter Spiess-Knafl
+ * @brief json-rpc.h
+ *
+ * This file is meant to include all necessary .h files of this framework.
+ */
 
-#ifndef CLIENT_H_
-#define CLIENT_H_
+#ifndef JSONRPCCPP_CLIENT_H_
+#define JSONRPCCPP_CLIENT_H_
 
-#include "clientconnector.h"
-#include "rpcprotocolclient.h"
-#include "json/json.h"
+#include <jsonrpc/client/abstractclientconnector.h>
+#include <jsonrpc/client/client.h>
+#include <jsonrpc/client/httpclient.h>
 
-#include <vector>
-#include <map>
-
-namespace jsonrpc
-{
-    class Client
-    {
-        public:
-            Client(AbstractClientConnector* connector);
-            ~Client();
-
-
-            void CallMethod(const std::string &name, const Json::Value &paramter, Json::Value& result) throw (JsonRpcException);
-            Json::Value CallMethod(const std::string& name, const Json::Value& paramter) throw (JsonRpcException);
-            void CallNotification(const std::string& name, const Json::Value& paramter) throw (JsonRpcException);
-
-        private:
-           AbstractClientConnector* connector;
-           RpcProtocolClient protocol;
-
-    };
-
-} /* namespace jsonrpc */
-#endif /* CLIENT_H_ */
+#endif /* JSONRPCCPP_CLIENT_H_ */

@@ -14,8 +14,9 @@
 #include <cstdlib>
 #include <cstring>
 
-#include <jsonrpc/rpc.h>
-#include <jsonrpc/procedure.h>
+#include <jsonrpc/server.h>
+#include <jsonrpc/client.h>
+#include <jsonrpc/common/procedure.h>
 
 #include "clientstubgenerator.h"
 #include "serverstubgenerator.h"

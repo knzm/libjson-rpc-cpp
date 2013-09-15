@@ -7,7 +7,7 @@
  * @license See attached LICENSE.txt
  ************************************************************************/
 
-#include <jsonrpc/procedure.h>
+#include <jsonrpc/common/procedure.h>
 #include <iostream>
 
 using namespace jsonrpc;

@@ -5,7 +5,7 @@
  * @brief This is a simple client example.
  */
 
-#include <jsonrpc/rpc.h>
+#include <jsonrpc/client.h>
 #include <iostream>
 
 using namespace jsonrpc;

@@ -10,7 +10,8 @@
 #ifndef SERVER_H
 #define SERVER_H
 
-#include <jsonrpc/rpc.h>
+#include <jsonrpc/server.h>
+#include <jsonrpc/client.h>
 
 //Methods
 

@@ -7,8 +7,8 @@
  * @license See attached LICENSE.txt
  ************************************************************************/
 
-#include <jsonrpc/rpc.h>
 #include "server.h"
+#include <jsonrpc/common/specificationwriter.h>
 
 using namespace std;
 using namespace jsonrpc;

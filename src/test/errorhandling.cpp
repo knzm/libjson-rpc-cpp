@@ -8,6 +8,8 @@
  ************************************************************************/
 
 #include <iostream>
+#include <jsonrpc/client.h>
+#include <jsonrpc/server.h>
 #include "server.h"
 
 using namespace jsonrpc;

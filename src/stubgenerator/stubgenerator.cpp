@@ -9,7 +9,7 @@
 
 #include <fstream>
 #include <algorithm>
-#include <jsonrpc/specificationparser.h>
+#include <jsonrpc/common/specificationparser.h>
 
 #include "stubgenerator.h"
 
