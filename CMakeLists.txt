@@ -70,10 +70,6 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 	SET(CPACK_PACKAGING_INSTALL_PREFIX "/usr/local")
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
-IF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-	SET(CPACK_GENERATOR "NSIS")
-ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-
 SET(CPACK_PACKAGE_DESCRIPTION "jsonrpc framework for C++, including server and client support with stubgenerator.")
 SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "jsonrpc framework for C++")
 SET(CPACK_PACKAGE_VENDOR "Peter Spiess-Knafl")
