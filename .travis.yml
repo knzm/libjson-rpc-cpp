@@ -2,10 +2,10 @@ language: cpp
 
 before_install:
  - sudo apt-get update -qq
- - sudo apt-get install -qq libcurl4-openssl-dev libjsoncpp-dev
+ - sudo apt-get install -qq libcurl4-openssl-dev libjsoncpp-dev libargtable2-dev
 
 compiler:
   - clang
   - gcc
 
-script: ls -l /usr/include/jsoncpp/* && ls -l /usr/lib/libjson* && cd build && cmake .. && make && make test
+script: cd build && cmake .. && make && make test
