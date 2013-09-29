@@ -16,8 +16,8 @@
 using namespace std;
 using namespace jsonrpc;
 
-CPPClientStubGenerator::CPPClientStubGenerator(const string &stubname, const string &filename) :
-    StubGenerator(stubname+"Client", filename)
+CPPClientStubGenerator::CPPClientStubGenerator(const string &stubname, std::vector<Procedure> &procedures) :
+    StubGenerator(stubname+"Client", procedures)
 {
 }
 

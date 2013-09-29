@@ -7,17 +7,18 @@
  * @license See attached LICENSE.txt
  ************************************************************************/
 
-#ifndef SERVERSTUBGENERATOR_H
-#define SERVERSTUBGENERATOR_H
+#ifndef JSONRPC_CPP_SERVERSTUBGENERATOR_H
+#define JSONRPC_CPP_SERVERSTUBGENERATOR_H
 
 #include "stubgenerator.h"
+#include "cppstubgenerator.h"
 
 namespace jsonrpc
 {
-    class ServerStubGenerator : public StubGenerator
+    class ServerStubGenerator : public StubGenerator, public CPPStubGenerator
     {
         public:
-            ServerStubGenerator(const std::string& stubname, const std::string& filename);
+            ServerStubGenerator(const std::string& stubname, std::vector<Procedure> &procedures);
 
             virtual std::string generateStub();
 
@@ -30,4 +31,4 @@ namespace jsonrpc
     };
 }
 
-#endif // SERVERSTUBGENERATOR_H
+#endif // JSONRPC_CPP_SERVERSTUBGENERATOR_H

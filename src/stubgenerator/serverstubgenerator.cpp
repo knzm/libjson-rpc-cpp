@@ -18,8 +18,8 @@ using namespace std;
 using namespace jsonrpc;
 
 
-ServerStubGenerator::ServerStubGenerator(const std::string &stubname, const std::string &filename) :
-    StubGenerator("Abstract"+stubname + "Server", filename)
+ServerStubGenerator::ServerStubGenerator(const std::string &stubname, vector<Procedure> &procedures) :
+    StubGenerator("Abstract"+stubname + "Server", procedures)
 {
 }
 

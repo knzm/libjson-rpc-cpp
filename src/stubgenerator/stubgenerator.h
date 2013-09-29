@@ -7,18 +7,20 @@
  * @license See attached LICENSE.txt
  ************************************************************************/
 
-#ifndef STUBGENERATOR_H
-#define STUBGENERATOR_H
+#ifndef JSONRPC_CPP_STUBGENERATOR_H
+#define JSONRPC_CPP_STUBGENERATOR_H
 
 #include <string>
 #include <jsonrpc/common/procedure.h>
 
 namespace jsonrpc
 {
+    enum connectiontype_t {CONNECTION_HTTP};
+
     class StubGenerator
     {
         public:
-            StubGenerator(const std::string& stubname, const std::string& filename);
+            StubGenerator(const std::string& stubname, std::vector<Procedure> &procedures);
             virtual ~StubGenerator();
 
             virtual std::string generateStubToFile(const std::string& outputpath);
@@ -30,15 +32,11 @@ namespace jsonrpc
 
         protected:
             std::string             stubname;
-            std::vector<Procedure>  procedures;
+            std::vector<Procedure>  &procedures;
 
-            static std::string toCppType        (jsontype_t type, bool isConst = false, bool isReference = false);
-            static std::string toCppConversion  (jsontype_t);
-            static std::string toString         (jsontype_t type);
-            static std::string normalizeString  (const std::string &text);
-            static std::string generateParameterDeclarationList(Procedure& proc);
+
     };
 }
 
 
-#endif // STUBGENERATOR_H
+#endif // JSONRPC_CPP_STUBGENERATOR_H

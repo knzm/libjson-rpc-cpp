@@ -1,17 +1,17 @@
-/**
- * @file main.cpp
- * @date 03.01.2013
- * @author Peter Spiess-Knafl <peter.knafl@gmail.com>
- * @brief This application generates stubs for all specified methods
- * and notifications of a given file
- */
+/*************************************************************************
+ * libjson-rpc-cpp
+ *************************************************************************
+ * @file    main.cpp
+ * @date    29.09.2013
+ * @author  Peter Spiess-Knafl <peter.knafl@gmail.com>
+ * @license See attached LICENSE.txt
+ ************************************************************************/
 
 #include <string>
 #include <iostream>
 
 #include <jsonrpc/server.h>
 #include <jsonrpc/client.h>
-#include <jsonrpc/common/procedure.h>
 
 #include <argtable2.h>
 
@@ -31,8 +31,7 @@ int main(int argc, char** argv)
     struct arg_end *end         = arg_end(20);
     void* argtable[] = {help, inputfile, classname, server, cppclient, end};
 
-    int nerrors = arg_parse(argc,argv,argtable);
-    if (nerrors > 0)
+    if (arg_parse(argc,argv,argtable) > 0)
     {
         //  cerr << "Invalid arguments: try --help for more information" << endl;
         arg_print_errors(stderr, end, argv[0]);
@@ -56,18 +55,19 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    try {
+    std::vector<Procedure> procedures = SpecificationParser::GetProceduresFromFile(inputfile->filename[0]);
 
+    try {
         if (server->count > 0)
         {
-            ServerStubGenerator serverstub(classname->sval[0], inputfile->filename[0]);
-            serverstub.generateStubToFile(server->sval[0]);
+            ServerStubGenerator serverstub(classname->sval[0], procedures);
+            cout << "Generated Server Stub to: " << serverstub.generateStubToFile(server->sval[0]) << endl;
         }
 
         if (cppclient->count > 0)
         {
-            CPPClientStubGenerator cppclientstub(classname->sval[0], inputfile->filename[0]);
-            cppclientstub.generateStubToFile(server->sval[0]);
+            CPPClientStubGenerator cppclientstub(classname->sval[0], procedures);
+            cout << "Genarted C++ Client Stub to: " << cppclientstub.generateStubToFile(cppclient->sval[0]) << endl;
         }
     } catch (const JsonRpcException &ex)
     {
