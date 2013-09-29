@@ -7,14 +7,14 @@
  * @license See attached LICENSE.txt
  ************************************************************************/
 
-#ifndef EXCEPTION_H_
-#define EXCEPTION_H_
+#ifndef JSONRPC_CPP_EXCEPTION_H_
+#define JSONRPC_CPP_EXCEPTION_H_
 
 #include <string>
 #include <sstream>
 #include <exception>
 
-#include <jsonrpc/common/errors.h>
+#include "errors.h"
 
 namespace jsonrpc
 {
@@ -23,16 +23,13 @@ namespace jsonrpc
     {
         public:
             JsonRpcException(int code);
-
             JsonRpcException(int code, const std::string& message);
-
             JsonRpcException(const std::string& message);
 
             virtual ~JsonRpcException() throw ();
 
-            int GetCode() const;
-
-            const std::string& GetMessage() const;
+            int                 GetCode() const;
+            const std::string&  GetMessage() const;
 
             virtual const char* what() const throw ();
 
@@ -45,4 +42,4 @@ namespace jsonrpc
     };
 
 } /* namespace jsonrpc */
-#endif /* EXCEPTION_H_ */
+#endif /* JSONRPC_CPP_EXCEPTION_H_ */

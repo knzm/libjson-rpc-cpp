@@ -16,18 +16,16 @@
 using namespace std;
 using namespace jsonrpc;
 
-StubGenerator::StubGenerator(const string &stubname, const string &filename) :
-    stubname(stubname)
+StubGenerator::StubGenerator    (const string &stubname, const string &filename) :
+    stubname                    (stubname),
+    procedures                  (SpecificationParser::GetProceduresFromFile(filename))
 {
-    this->procedures = SpecificationParser::GetProceduresFromFile(filename);
+}
+StubGenerator::~StubGenerator   ()
+{
 }
 
-StubGenerator::~StubGenerator()
-{
-    delete this->procedures;
-}
-
-void StubGenerator::replaceAll(string &text, const string &fnd, const string &rep)
+void    StubGenerator::replaceAll                       (string &text, const string &fnd, const string &rep)
 {
     size_t pos = text.find(fnd);
     while (pos != string::npos)
@@ -36,8 +34,7 @@ void StubGenerator::replaceAll(string &text, const string &fnd, const string &re
         pos = text.find(fnd, pos + rep.length());
     }
 }
-
-std::string StubGenerator::generateStubToFile(const string &path)
+string  StubGenerator::generateStubToFile               (const string &path)
 {
     ofstream stream;
     string filename = this->stubname + ".h";
@@ -56,13 +53,11 @@ std::string StubGenerator::generateStubToFile(const string &path)
     stream.close();
     return completepath;
 }
-
-string StubGenerator::getStubName()
+string  StubGenerator::getStubName                      ()
 {
     return this->stubname;
 }
-
-string StubGenerator::toCppType(jsontype_t type, bool isConst, bool isReference)
+string  StubGenerator::toCppType                        (jsontype_t type, bool isConst, bool isReference)
 {
     string result;
     switch(type)
@@ -93,8 +88,7 @@ string StubGenerator::toCppType(jsontype_t type, bool isConst, bool isReference)
     }
     return result;
 }
-
-string StubGenerator::toCppConversion(jsontype_t type)
+string  StubGenerator::toCppConversion                  (jsontype_t type)
 {
     string result;
     switch(type)
@@ -117,8 +111,7 @@ string StubGenerator::toCppConversion(jsontype_t type)
     }
     return result;
 }
-
-string StubGenerator::toString(jsontype_t type)
+string  StubGenerator::toString                         (jsontype_t type)
 {
     string result;
     switch(type)
@@ -146,8 +139,7 @@ string StubGenerator::toString(jsontype_t type)
     }
     return result;
 }
-
-string StubGenerator::generateParameterDeclarationList(Procedure &proc)
+string  StubGenerator::generateParameterDeclarationList (Procedure &proc)
 {
     stringstream param_string;
     parameterNameList_t list = proc.GetParameters();
@@ -161,8 +153,7 @@ string StubGenerator::generateParameterDeclarationList(Procedure &proc)
     }
     return param_string.str();
 }
-
-string StubGenerator::normalizeString(const string &text)
+string  StubGenerator::normalizeString                  (const string &text)
 {
     string result = text;
     for(unsigned int i=0; i < text.length(); i++)

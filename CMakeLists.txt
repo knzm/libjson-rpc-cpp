@@ -23,7 +23,6 @@ SET(MAJOR_VERSION 0)
 SET(MINOR_VERSION 3)
 SET(PATCH_VERSION 0)
 
-
 # configure a header file to pass some of the CMake settings
 # to the source code
 configure_file (
@@ -34,9 +33,17 @@ install(FILES ${PROJECT_BINARY_DIR}/version.h DESTINATION include/jsonrpc)
 
 
 add_subdirectory(src/jsonrpc)
-add_subdirectory(src/test)
 add_subdirectory(src/stubgenerator)
 add_subdirectory(src/example)
+
+
+find_package(Boost COMPONENTS unit_test_framework REQUIRED)
+IF(Boost_FOUND)
+    message("Found Bosst Unit Suite -> Enabling test cases")
+    ENABLE_TESTING()
+    set(CTEST_OUTPUT_ON_FAILURE TRUE)
+    add_subdirectory(src/test)
+ENDIF(Boost_FOUND)
 
 
 # uninstall target
@@ -90,20 +97,5 @@ SET(CPACK_COMPONENTS_ALL jsonrpc jsoncpp mongoose jsonrpcstub)
 INCLUDE(CPack)
 
 ENDIF(EXISTS "${CMAKE_ROOT}/Modules/CPack.cmake")
-
-ENABLE_TESTING()
-
-set(TEST_BINARIES ${CMAKE_BINARY_DIR}/out/test)
-set(CTEST_OUTPUT_ON_FAILURE TRUE)
-
-ADD_TEST(helloworld ${TEST_BINARIES}/helloworld)
-ADD_TEST(remotecounter ${TEST_BINARIES}/remotecounter)
-ADD_TEST(remotecalculator ${TEST_BINARIES}/remotecalculator)
-ADD_TEST(errorhandling ${TEST_BINARIES}/errorhandling)
-ADD_TEST(jsonrpcprotocol ${TEST_BINARIES}/jsonrpcprotocol)
-ADD_TEST(specification ${TEST_BINARIES}/specification)
-ADD_TEST(parametervalidation ${TEST_BINARIES}/parametervalidation)
-
-
 
 

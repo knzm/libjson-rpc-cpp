@@ -27,16 +27,15 @@ target_link_libraries(jsonrpcserver jsonrpccommon ${CMAKE_DL_LIBS})
 target_link_libraries(jsonrpcserverStatic jsonrpccommonStatic ${CMAKE_DL_LIBS})
 set_target_properties(jsonrpcserverStatic PROPERTIES OUTPUT_NAME jsonrpcserver)
 
-set(VERSION_STRING ${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}) 
+set(VERSION_STRING ${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION})
 set_target_properties(jsonrpccommon jsonrpccommonStatic jsonrpcclient jsonrpcclientStatic jsonrpcserver jsonrpcserverStatic PROPERTIES VERSION "${VERSION_STRING}" SOVERSION "${VERSION_MAJOR}")
 
-install(FILES ${jsonrpc_header}        DESTINATION include/jsonrpc) 
+install(FILES ${jsonrpc_header}        DESTINATION include/jsonrpc)
 install(FILES ${jsonrpc_header_common} DESTINATION include/jsonrpc/common)
 install(FILES ${jsonrpc_header_client} DESTINATION include/jsonrpc/client)
 install(FILES ${jsonrpc_header_server} DESTINATION include/jsonrpc/server)
 
 install(TARGETS jsonrpccommon jsonrpccommonStatic jsonrpcclient jsonrpcclientStatic jsonrpcserver jsonrpcserverStatic
-		      LIBRARY DESTINATION lib
+                      LIBRARY DESTINATION lib
                       ARCHIVE DESTINATION lib
                       RUNTIME DESTINATION bin)
-

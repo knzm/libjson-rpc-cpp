@@ -13,133 +13,127 @@
 #include <cstdio>
 #include <cstring>
 
-namespace jsonrpc
+using namespace jsonrpc;
+
+int HttpServer::callback(struct mg_connection *conn)
 {
-    int HttpServer::callback(struct mg_connection *conn)
+    const struct mg_request_info *request_info = mg_get_request_info(conn);
+    char* readBuffer = NULL;
+    int postSize = 0;
+
+    HttpServer* _this = (HttpServer*) request_info->user_data;
+
+    if (strcmp(request_info->request_method, "GET") == 0)
     {
-        const struct mg_request_info *request_info = mg_get_request_info(conn);
-        char* readBuffer = NULL;
-        int postSize = 0;
-
-        HttpServer* _this = (HttpServer*) request_info->user_data;
-
-        if (strcmp(request_info->request_method, "GET") == 0)
+        if(_this->showSpec)
         {
-            if(_this->showSpec)
-            {
-                _this->SendResponse(_this->GetSpecification(), conn);
-                return 1;
-            }
-            //Mark the request as unprocessed.
-            return 0;
-        }
-        else if (strcmp(request_info->request_method, "POST") == 0)
-        {
-            //get size of postData
-            const char* size_header = mg_get_header(conn, "Content-Length");
-            if (size_header != NULL)
-            {
-                sscanf(size_header, "%d", &postSize);
-                readBuffer = (char*) malloc(sizeof(char) * (postSize + 1));
-                mg_read(conn, readBuffer, postSize);
-                _this->OnRequest(readBuffer, conn);
-                free(readBuffer);
-            }
-            else
-            {
-                _this->OnRequest("", conn);
-            }
-
-
-            //Mark the request as processed by our handler.
             return 1;
         }
-        else
+        //Mark the request as unprocessed.
+        return 0;
+    }
+    else if (strcmp(request_info->request_method, "POST") == 0)
+    {
+        //get size of postData
+        const char* size_header = mg_get_header(conn, "Content-Length");
+        if (size_header != NULL)
         {
-            return 0;
-        }
-    }
-
-    HttpServer::HttpServer(int port, bool enableSpecification, const std::string &sslcert) :
-        AbstractServerConnector(),
-        port(port),
-        ctx(NULL),
-        running(false),
-        showSpec(enableSpecification),
-        sslcert(sslcert)
-    {
-    }
-
-    HttpServer::~HttpServer()
-    {
-        this->StopListening();
-    }
-
-    bool HttpServer::StartListening()
-    {
-        if(!this->running)
-        {
-            char port[6];
-            struct mg_callbacks callbacks;
-            memset(&callbacks, 0, sizeof(callbacks));
-            callbacks.begin_request = callback;
-            if(this->sslcert == "")
-            {
-                sprintf(port, "%d", this->port);
-                const char *options[] = { "listening_ports", port, NULL };
-                this->ctx = mg_start(&callbacks, this, options);
-            }
-            else
-            {
-                sprintf(port, "%ds", this->port);
-                const char *options[] =
-                { "listening_ports", port, "ssl_certificate", this->sslcert.c_str(), NULL };
-                this->ctx = mg_start(&callbacks, this, options);
-            }
-
-            if (this->ctx != NULL)
-            {
-                this->running =  true;
-                return true;
-            }
-            else
-            {
-                this->running = false;
-                return false;
-            }
+            sscanf(size_header, "%d", &postSize);
+            readBuffer = (char*) malloc(sizeof(char) * (postSize + 1));
+            mg_read(conn, readBuffer, postSize);
+            _this->OnRequest(readBuffer, conn);
+            free(readBuffer);
         }
         else
         {
+            _this->OnRequest("", conn);
+        }
+
+
+        //Mark the request as processed by our handler.
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+HttpServer::HttpServer(int port, bool enableSpecification, const std::string &sslcert) :
+    AbstractServerConnector(),
+    port(port),
+    ctx(NULL),
+    running(false),
+    showSpec(enableSpecification),
+    sslcert(sslcert)
+{
+}
+HttpServer::~HttpServer()
+{
+    this->StopListening();
+}
+
+bool HttpServer::StartListening()
+{
+    if(!this->running)
+    {
+        char port[6];
+        struct mg_callbacks callbacks;
+        memset(&callbacks, 0, sizeof(callbacks));
+        callbacks.begin_request = callback;
+        if(this->sslcert == "")
+        {
+            sprintf(port, "%d", this->port);
+            const char *options[] = { "listening_ports", port, NULL };
+            this->ctx = mg_start(&callbacks, this, options);
+        }
+        else
+        {
+            sprintf(port, "%ds", this->port);
+            const char *options[] =
+            { "listening_ports", port, "ssl_certificate", this->sslcert.c_str(), NULL };
+            this->ctx = mg_start(&callbacks, this, options);
+        }
+
+        if (this->ctx != NULL)
+        {
+            this->running =  true;
             return true;
         }
-    }
-
-    bool HttpServer::StopListening()
-    {
-        if(this->running)
+        else
         {
-            mg_stop(this->ctx);
             this->running = false;
-            return true;
-        }
-        return true;
-    }
-
-    bool HttpServer::SendResponse(const std::string& response, void* addInfo)
-    {
-        struct mg_connection* conn = (struct mg_connection*) addInfo;
-        if (mg_printf(conn, "HTTP/1.1 200 OK\r\n"
-                      "Content-Type: application/json\r\n"
-                      "Content-Length: %d\r\n"
-                      "\r\n"
-                      "%s",(int)response.length(), response.c_str()) > 0)
-        {
-            return true;
-        }
-        else
-        {
             return false;
         }
     }
-
-} /* namespace jsonrpc */
+    else
+    {
+        return true;
+    }
+}
+bool HttpServer::StopListening()
+{
+    if(this->running)
+    {
+        mg_stop(this->ctx);
+        this->running = false;
+        return true;
+    }
+    return true;
+}
+bool HttpServer::SendResponse(const std::string& response, void* addInfo)
+{
+    struct mg_connection* conn = (struct mg_connection*) addInfo;
+    if (mg_printf(conn, "HTTP/1.1 200 OK\r\n"
+                  "Content-Type: application/json\r\n"
+                  "Content-Length: %d\r\n"
+                  "\r\n"
+                  "%s",(int)response.length(), response.c_str()) > 0)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}

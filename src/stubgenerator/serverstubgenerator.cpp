@@ -43,12 +43,11 @@ string ServerStubGenerator::generateBindings()
 {
     stringstream result;
     string tmp;
-    Procedure* proc;
 
-    for(procedurelist_t::iterator it = this->procedures->begin(); it != this->procedures->end(); it++)
+    for(vector<Procedure>::iterator it = this->procedures.begin(); it != this->procedures.end(); it++)
     {
-        proc = it->second;
-        if(proc->GetProcedureType() == RPC_METHOD)
+        Procedure &proc = *it;
+        if(proc.GetProcedureType() == RPC_METHOD)
         {
             tmp = TEMPLATE_SERVER_METHODBINDING;
         }
@@ -56,12 +55,12 @@ string ServerStubGenerator::generateBindings()
         {
             tmp = TEMPLATE_SERVER_NOTIFICATIONBINDING;
         }
-        replaceAll(tmp, "<procedurename>", normalizeString(proc->GetProcedureName()));
-        replaceAll(tmp, "<returntype>", toString(proc->GetReturnType()));
+        replaceAll(tmp, "<procedurename>", normalizeString(proc.GetProcedureName()));
+        replaceAll(tmp, "<returntype>", toString(proc.GetReturnType()));
         replaceAll(tmp, "<parameterlist>", generateBindingParameterlist(proc));
         replaceAll(tmp, "<stubname>", this->stubname);
 
-        if(proc->GetParameterDeclarationType() == PARAMS_BY_NAME)
+        if(proc.GetParameterDeclarationType() == PARAMS_BY_NAME)
         {
             replaceAll(tmp, "<paramtype>", "jsonrpc::PARAMS_BY_NAME");
         }
@@ -79,11 +78,10 @@ string ServerStubGenerator::generateProcedureDefinitions()
 {
     stringstream result;
     string tmp;
-    Procedure* proc;
-    for(procedurelist_t::iterator it = this->procedures->begin(); it != this->procedures->end(); it++)
+    for(vector<Procedure>::iterator it = this->procedures.begin(); it != this->procedures.end(); it++)
     {
-        proc = it->second;
-        if(proc->GetProcedureType() == RPC_METHOD)
+        Procedure &proc = *it;
+        if(proc.GetProcedureType() == RPC_METHOD)
         {
             tmp = TEMPLATE_SERVER_METHODDEFINITION;
         }
@@ -91,7 +89,7 @@ string ServerStubGenerator::generateProcedureDefinitions()
         {
             tmp = TEMPLATE_SERVER_NOTIFICAITONDEFINITION;
         }
-        replaceAll(tmp,"<procedurename>", proc->GetProcedureName());
+        replaceAll(tmp,"<procedurename>", proc.GetProcedureName());
         replaceAll(tmp,"<parametermapping>", this->generateParameterMapping(proc));
         result << tmp << endl;
     }
@@ -102,46 +100,45 @@ string ServerStubGenerator::generateAbstractDefinitions()
 {
     stringstream result;
     string tmp;
-    Procedure* proc;
 
-    for(procedurelist_t::iterator it = this->procedures->begin(); it != this->procedures->end(); it++)
+    for(vector<Procedure>::iterator it = this->procedures.begin(); it != this->procedures.end(); it++)
     {
-        proc = it->second;
+        Procedure& proc = *it;
         tmp = TEMPLATE_SERVER_ABSTRACTDEFINITION;
         string returntype ="void";
-        if(proc->GetProcedureType() == RPC_METHOD)
+        if(proc.GetProcedureType() == RPC_METHOD)
         {
-            returntype = toCppType(proc->GetReturnType());
+            returntype = toCppType(proc.GetReturnType());
         }
         replaceAll(tmp, "<returntype>", returntype);
-        replaceAll(tmp, "<procedurename>", proc->GetProcedureName());
-        replaceAll(tmp, "<parameterlist>", generateParameterDeclarationList(*proc));
+        replaceAll(tmp, "<procedurename>", proc.GetProcedureName());
+        replaceAll(tmp, "<parameterlist>", generateParameterDeclarationList(proc));
         result << tmp;
     }
     return result.str();
 }
 
-string ServerStubGenerator::generateBindingParameterlist(Procedure *proc)
+string ServerStubGenerator::generateBindingParameterlist(Procedure &proc)
 {
     stringstream parameter;
-    parameterNameList_t& list = proc->GetParameters();
+    const parameterNameList_t& list = proc.GetParameters();
 
-    for(parameterNameList_t::iterator it2 = list.begin(); it2 != list.end(); it2++)
+    for(parameterNameList_t::const_iterator it2 = list.begin(); it2 != list.end(); it2++)
     {
         parameter << "\"" << it2->first << "\"," << toString(it2->second) << ",";
     }
     return parameter.str();
 }
 
-string ServerStubGenerator::generateParameterMapping(Procedure *proc)
+string ServerStubGenerator::generateParameterMapping(Procedure &proc)
 {
     stringstream parameter;
     string tmp;
-    parameterNameList_t& params = proc->GetParameters();
+    const parameterNameList_t& params = proc.GetParameters();
     int i=0;
-    for(parameterNameList_t::iterator it2 = params.begin(); it2 != params.end(); it2++)
+    for(parameterNameList_t::const_iterator it2 = params.begin(); it2 != params.end(); it2++)
     {
-        if(proc->GetParameterDeclarationType() == PARAMS_BY_NAME)
+        if(proc.GetParameterDeclarationType() == PARAMS_BY_NAME)
         {
             tmp = "request[\"" + it2->first  + "\"]" + toCppConversion(it2->second);
         }

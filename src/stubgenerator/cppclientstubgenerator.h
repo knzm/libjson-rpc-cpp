@@ -14,10 +14,10 @@
 
 namespace jsonrpc
 {
-    class ClientStubGenerator : public StubGenerator
+    class CPPClientStubGenerator : public StubGenerator
     {
         public:
-            ClientStubGenerator(const std::string& stubname, const std::string& filename);
+            CPPClientStubGenerator(const std::string& stubname, const std::string& filename);
 
             virtual std::string generateStub();
 

@@ -19,26 +19,24 @@ namespace jsonrpc
     {
         public:
             StubGenerator(const std::string& stubname, const std::string& filename);
+            virtual ~StubGenerator();
 
-            ~StubGenerator();
+            virtual std::string generateStubToFile(const std::string& outputpath);
+            virtual std::string getStubName();
 
             virtual std::string generateStub() = 0;
-            std::string generateStubToFile(const std::string& outputpath);
-            std::string getStubName();
 
             static void replaceAll(std::string& text, const std::string& fnd, const std::string& rep);
 
         protected:
-            procedurelist_t* procedures;
-            std::string stubname;
+            std::string             stubname;
+            std::vector<Procedure>  procedures;
 
-            static std::string toCppType(jsontype_t type, bool isConst = false, bool isReference = false);
-            static std::string toCppConversion(jsontype_t);
-            static std::string toString(jsontype_t type);
-
+            static std::string toCppType        (jsontype_t type, bool isConst = false, bool isReference = false);
+            static std::string toCppConversion  (jsontype_t);
+            static std::string toString         (jsontype_t type);
+            static std::string normalizeString  (const std::string &text);
             static std::string generateParameterDeclarationList(Procedure& proc);
-
-            static std::string normalizeString(const std::string &text);
     };
 }
 

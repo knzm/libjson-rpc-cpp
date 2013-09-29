@@ -9,18 +9,14 @@
 #  JSONCPP_LIBRARY, where to find the jsoncpp library.
 
 FIND_PATH(JSONCPP_INCLUDE_DIR json.h
+/usr/include/jsoncpp/json
+/usr/include/jsoncpp
 /usr/local/include/jsoncpp/json
 /usr/local/include/jsoncpp
-/usr/include/jsoncpp
-/usr/include/jsoncpp/json
 )
 
-SET(JSONCPP_NAMES "${JSONCPP_NAMES} libjsoncpp.so")
 
-FIND_LIBRARY(JSONCPP_LIBRARY
-  NAMES ${JSONCPP_NAMES}
-  PATHS /usr/lib /usr/local/lib
-  )
+FIND_LIBRARY(JSONCPP_LIBRARY NAMES jsoncpp HINTS /usr/lib /usr/local/lib)
 
 IF (JSONCPP_LIBRARY AND JSONCPP_INCLUDE_DIR)
     SET(JSONCPP_LIBRARIES ${JSONCPP_LIBRARY})
@@ -36,7 +32,7 @@ IF (JSONCPP_FOUND)
    ENDIF (NOT JSONCPP_FIND_QUIETLY)
 ELSE (JSONCPP_FOUND)
    IF (JSONCPP_FIND_REQUIRED)
-      MESSAGE(FATAL_ERROR "Could not find JSONCpp library include: ${JSONCPP_INCLUDE_DIR}, lib: ${JSONCPP_LIBRARY}")
+      MESSAGE(FATAL_ERROR "Could not find JSONCPP library include: ${JSONCPP_INCLUDE_DIR}, lib: ${JSONCPP_LIBRARIES}")
    ENDIF (JSONCPP_FIND_REQUIRED)
 ENDIF (JSONCPP_FOUND)
 

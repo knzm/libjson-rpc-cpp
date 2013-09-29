@@ -1,14 +1,14 @@
 /*************************************************************************
  * libjson-rpc-cpp
  *************************************************************************
- * @file    clientstubgenerator.cpp
+ * @file    CPPClientStubGenerator.cpp
  * @date    01.05.2013
  * @author  Peter Spiess-Knafl <peter.knafl@gmail.com>
  * @license See attached LICENSE.txt
  ************************************************************************/
 
-#include "clientstubgenerator.h"
-#include "clienttemplate.h"
+#include "cppclientstubgenerator.h"
+#include "cppclienttemplate.h"
 
 #include <sstream>
 #include <algorithm>
@@ -16,12 +16,12 @@
 using namespace std;
 using namespace jsonrpc;
 
-ClientStubGenerator::ClientStubGenerator(const string &stubname, const string &filename) :
+CPPClientStubGenerator::CPPClientStubGenerator(const string &stubname, const string &filename) :
     StubGenerator(stubname+"Client", filename)
 {
 }
 
-std::string ClientStubGenerator::generateStub()
+std::string CPPClientStubGenerator::generateStub()
 {
     string tmp = TEMPLATE_CLIENT_STUB;
     replaceAll(tmp, "<stubname>", stubname);
@@ -33,17 +33,16 @@ std::string ClientStubGenerator::generateStub()
 
     //generate procedures
     stringstream procedure_string;
-    procedurelist_t::iterator it;
-    for (it = procedures->begin(); it != procedures->end(); it++)
+    for (vector<Procedure>::iterator it = procedures.begin(); it != procedures.end(); it++)
     {
-        procedure_string << generateMethod(*(it->second)) << endl;
+        procedure_string << generateMethod(*it) << endl;
     }
 
     replaceAll(tmp, "<methods>", procedure_string.str());
     return tmp;
 }
 
-string ClientStubGenerator::generateMethod(Procedure &proc)
+string CPPClientStubGenerator::generateMethod(Procedure &proc)
 {
     string tmp = TEMPLATE_CLIENT_METHOD;
 

@@ -7,8 +7,8 @@
  * @license See attached LICENSE.txt
  ************************************************************************/
 
-#ifndef HTTPCLIENT_H_
-#define HTTPCLIENT_H_
+#ifndef JSONRPC_CPP_HTTPCLIENT_H_
+#define JSONRPC_CPP_HTTPCLIENT_H_
 
 #include <jsonrpc/client/abstractclientconnector.h>
 #include <jsonrpc/common/exception.h>
@@ -33,4 +33,4 @@ namespace jsonrpc
     };
 
 } /* namespace jsonrpc */
-#endif /* HTTPCLIENT_H_ */
+#endif /* JSONRPC_CPP_HTTPCLIENT_H_ */

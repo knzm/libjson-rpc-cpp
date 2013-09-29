@@ -1,24 +1,11 @@
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/out/test)
+add_executable(unit_testsuite unit_test.cpp server.cpp)
+target_link_libraries(unit_testsuite ${Boost_LIBRARIES} jsonrpccommon jsonrpcclient jsonrpcserver)
 
-set(COMMON_SOURCES server.cpp)
-
-add_executable(helloworld helloworld.cpp ${COMMON_SOURCES})
-target_link_libraries(helloworld jsonrpcclient jsonrpcserver jsonrpccommon)
-
-add_executable(remotecounter remotecounter.cpp ${COMMON_SOURCES})
-target_link_libraries(remotecounter jsonrpcclient jsonrpcserver jsonrpccommon)
-
-add_executable(remotecalculator remotecalculator.cpp ${COMMON_SOURCES})
-target_link_libraries(remotecalculator jsonrpcclient jsonrpcserver jsonrpccommon)
-
-add_executable(errorhandling errorhandling.cpp ${COMMON_SOURCES})
-target_link_libraries(errorhandling jsonrpcclient jsonrpcserver jsonrpccommon)
-
-add_executable(jsonrpcprotocol jsonrpcprotocol.cpp ${COMMON_SOURCES})
-target_link_libraries(jsonrpcprotocol jsonrpcclient jsonrpcserver jsonrpccommon)
-
-add_executable(specification specification.cpp ${COMMON_SOURCES})
-target_link_libraries(specification jsonrpcclient jsonrpcserver jsonrpccommon)
-
-add_executable(parametervalidation parametervalidation.cpp)
-target_link_libraries(parametervalidation jsonrpcclient jsonrpcserver jsonrpccommon)
+ADD_TEST(helloworld ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/unit_testsuite --run_test=test_helloworld)
+ADD_TEST(connector ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/unit_testsuite --run_test=test_connector)
+ADD_TEST(remotecalculator ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/unit_testsuite --run_test=test_remotecalculator)
+ADD_TEST(remotecounter ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/unit_testsuite --run_test=test_remotecounter)
+ADD_TEST(clientexception ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/unit_testsuite --run_test=test_clientexception)
+ADD_TEST(jsonrpcprotocol ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/unit_testsuite --run_test=test_jsonrpcprotocol)
+ADD_TEST(specification ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/unit_testsuite --run_test=test_specification)
+ADD_TEST(parametervalidation ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/unit_testsuite --run_test=test_parametervalidation)

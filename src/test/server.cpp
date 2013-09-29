@@ -13,11 +13,10 @@
 using namespace std;
 using namespace jsonrpc;
 
-TestServer::TestServer() :
-    AbstractServer<TestServer>(new HttpServer(8080)),
+TestServer::TestServer(AbstractServerConnector &connector) :
+    AbstractServer<TestServer>(connector),
     cnt(0)
 {
-    cout << "Called default const" << endl;
     this->bindAndAddMethod(new Procedure("sayHello", PARAMS_BY_NAME, JSON_STRING, "name", JSON_STRING, NULL), &TestServer::sayHello);
     this->bindAndAddMethod(new Procedure("getCounterValue", PARAMS_BY_NAME, JSON_INTEGER, NULL), &TestServer::getCounterValue);
     this->bindAndAddMethod(new Procedure("add", PARAMS_BY_NAME, JSON_INTEGER, "value1", JSON_INTEGER, "value2", JSON_INTEGER, NULL), &TestServer::add);
