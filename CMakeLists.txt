@@ -37,7 +37,7 @@ add_subdirectory(src/stubgenerator)
 add_subdirectory(src/example)
 
 
-find_package(Boost COMPONENTS unit_test_framework REQUIRED)
+find_package(Boost COMPONENTS unit_test_framework)
 IF(Boost_FOUND)
     message("Found Bosst Unit Suite -> Enabling test cases")
     ENABLE_TESTING()
