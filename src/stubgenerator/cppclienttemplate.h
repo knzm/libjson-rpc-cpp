@@ -1,5 +1,5 @@
-#ifndef CLIENTTEMPLATE_CLIENT_H_
-#define CLIENTTEMPLATE_CLIENT_H_
+#ifndef JSONRPC_CPP_CLIENTTEMPLATE_CLIENT_H_
+#define JSONRPC_CPP_CLIENTTEMPLATE_CLIENT_H_
 
 #define TEMPLATE_CLIENT_METHOD "\
         <return_type> <methodname>(<parameters>) throw (jsonrpc::JsonRpcException)\n\
@@ -18,24 +18,18 @@
 #ifndef _<STUBNAME>_H_\n\
 #define _<STUBNAME>_H_\n\
 \n\
-#include <jsonrpc/rpc.h>\n\
+#include <jsonrpc/client.h>\n\
 \n\
-class <stubname>\n\
+class <stubname> : public jsonrpc::Client\n\
 {\n\
     public:\n\
-        <stubname>(jsonrpc::AbstractClientConnector* conn)\n\
+        <stubname>(jsonrpc::AbstractClientConnector &conn) : \n\
+            jsonrpc::Client(conn)\n\
         {\n\
-            this->client = new jsonrpc::Client(conn);\n\
-        }\n\
-        ~<stubname>()\n\
-        {\n\
-            delete this->client;\n\
         }\n\n\
 <methods>\
-    private:\n\
-        jsonrpc::Client* client;\n\
 };\n\
 #endif //_<STUBNAME>_H_\n\
 "
 
-#endif
+#endif //JSONRPC_CPP_CLIENTTEMPLATE_CLIENT_H_

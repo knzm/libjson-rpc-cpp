@@ -82,12 +82,12 @@ string CPPClientStubGenerator::generateMethod(Procedure &proc)
         //TODO: add return type parsing
         replaceAll(tmp, "<return_type>", toCppType(proc.GetReturnType()));
         replaceAll(tmp, "<return_statement>",
-                   "return this->client->CallMethod(\"" + proc.GetProcedureName() + "\",p)"+ toCppConversion(proc.GetReturnType()) +";");
+                   "return this->CallMethod(\"" + proc.GetProcedureName() + "\",p)"+ toCppConversion(proc.GetReturnType()) +";");
     }
     else
     {
         replaceAll(tmp, "<return_type>", "void");
-        replaceAll(tmp, "<return_statement>", "this->client->CallNotification(\"" + proc.GetProcedureName() + "\",p);");
+        replaceAll(tmp, "<return_statement>", "this->CallNotification(\"" + proc.GetProcedureName() + "\",p);");
     }
 
     return tmp;

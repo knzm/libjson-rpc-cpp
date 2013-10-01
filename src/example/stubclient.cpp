@@ -7,17 +7,17 @@
  * @license See attached LICENSE.txt
  ************************************************************************/
 
-#include <jsonrpc/rpc.h>
 #include <iostream>
 
-#include "mystubclient.h"
+#include "gen/stubclient.h"
 
 using namespace jsonrpc;
 using namespace std;
 
 int main()
 {
-    MyStubClient c(new HttpClient("http://localhost:8080"));
+    HttpClient httpclient("http://localhost:8080");
+    StubClient c(httpclient);
 
     try
     {

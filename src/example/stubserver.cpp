@@ -6,10 +6,9 @@
  * @author  Peter Spiess-Knafl <peter.knafl@gmail.com>
  * @license See attached LICENSE.txt
  ************************************************************************/
-#include <jsonrpc/rpc.h>
 #include <iostream>
 
-#include "abstractstubserver.h"
+#include "gen/abstractsubserver.h"
 
 using namespace jsonrpc;
 using namespace std;
@@ -17,15 +16,15 @@ using namespace std;
 class MyStubServer : public AbstractStubServer
 {
     public:
-        MyStubServer();
+        MyStubServer(AbstractServerConnector &connector);
 
         virtual void notifyServer();
         virtual std::string sayHello(const std::string& name);
         virtual int addNumbers(const int& param1, const int& param2);
 };
 
-MyStubServer::MyStubServer() :
-    AbstractMyStubServer(new HttpServer(8080))
+MyStubServer::MyStubServer(AbstractServerConnector &connector) :
+    AbstractStubServer(connector)
 {
 }
 
@@ -46,7 +45,8 @@ int MyStubServer::addNumbers(const int &param1, const int &param2)
 
 int main()
 {
-    MyStubServer s;
+    HttpServer httpserver(8080);
+    MyStubServer s(httpserver);
     s.StartListening();
 
     getchar();

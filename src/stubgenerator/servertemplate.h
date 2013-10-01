@@ -7,8 +7,8 @@
  * @license See attached LICENSE.txt
  ************************************************************************/
 
-#ifndef SERVERTEMPLATE_H
-#define SERVERTEMPLATE_H
+#ifndef JSONRPC_CPP_SERVERTEMPLATE_H
+#define JSONRPC_CPP_SERVERTEMPLATE_H
 
 #define TEMPLATE_SERVER_STUB "\
 /**\n\
@@ -18,12 +18,12 @@
 #ifndef _<STUBNAME>_H_\n\
 #define _<STUBNAME>_H_\n\
 \n\
-#include <jsonrpc/rpc.h>\n\
+#include <jsonrpc/server.h>\n\
 \n\
 class <stubname> : public jsonrpc::AbstractServer<<stubname>>\n\
 {\n\
     public:\n\
-        <stubname>(jsonrpc::AbstractServerConnector* conn) :\n\
+        <stubname>(jsonrpc::AbstractServerConnector& conn) :\n\
             jsonrpc::AbstractServer<<stubname>>(conn) \n\
         {\n\
 <procedurebindings>\n\
@@ -57,4 +57,4 @@ class <stubname> : public jsonrpc::AbstractServer<<stubname>>\n\
         virtual <returntype> <procedurename>(<parameterlist>) = 0;\n\
 "
 
-#endif // SERVERTEMPLATE_H
+#endif // JSONRPC_CPP_SERVERTEMPLATE_H
