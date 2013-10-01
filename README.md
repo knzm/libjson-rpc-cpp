@@ -189,15 +189,17 @@ g++ main.cpp -ljsonrpc -o sampleclient
 
 Roadmap for v0.3
 --------
-- Split lib into client, server and common parts.
-- Remove jsoncpp build.
+- ~~Split lib into client, server and common parts.~~
+- ~~Remove jsoncpp build.~~
 - Add json-rpc 1 legacy support for the server.
-- Generate stub files in examples using cmake + jsonrpcstub tool.
+- ~~Generate stub files in examples using cmake + jsonrpcstub tool.~~
 - Extend jsonrpcstub: provide client stub generator for C++, C, Java, Python and PHP (maybe GO).
-- Extend the testing programs (maybe using real unit test suite, like boost test framework).
-- Provide .deb package.
+- ~~Extend the testing programs (maybe using real unit test suite, like boost test framework).~~
+- ~~Provide .deb package.~~
 - Documentation for extending libjson-rpc-cpp (implementing more connectors, authentication manager).
 - Review the interfaces to provide a more stable API for the future.
+- ~~Improve Memory management (use more references instead of pointers).~~
+- Bring back windows support.
 
 
 Changes in v0.2.1
