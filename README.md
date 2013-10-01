@@ -71,35 +71,35 @@ This example will show the most simple way to create a rpc server and client. If
 ```json
 [
 	{
-		"method": "sayHello",
+		"name": "sayHello",
 		"params": { 
 			"name": "Peter"
 		},
 		"returns" : "Hello Peter"
 	},
 	{
-		"notification" : "notifyServer",
+		"name" : "notifyServer",
 		"params": null
 	}
 ]
 ```
 
-The type of a return value or parameter is defined by the literal assigned to it. In this example you can see how to specify methods and notifications.
+The type of a return value or parameter is defined by the literal assigned to it. In this example you can see how to specify methods and notifications. If a specification object has a `returns` statement it is a method, otherwise it is a notification.
 
 ### Step 2: Generate the stubs for client and server ###
 
 Call jsonrpcstub:
 ```sh
-jsonrpcstub -s -c -o /Users/cinemast/Desktop spec.json MyStub
+jsonrpcstub --input=spec.json --server=gen/abstractserverstub.h --cpp=gen/clientstub.h --class Stub
 ```
 
-This generates the server (-s) and the client (-c) stub to the specified output directory (-o). `spec.json` is the specification file. `MyStub` defines the name of the stub classes.
+This generates the server (--server) and the client (--cpp) stub to the specified output files. `--input=spec.json` is the specification file. `--class Stub` defines the name of the stub classes.
 
 You should see the following on your command line: 
 
 ```sh
-Client Stub genearted to: /Users/cinemast/Desktop/MyStubClient.h
-Server Stub genearted to: /Users/cinemast/Desktop/AbstractMyStubServer.h
+Client Stub genearted to: /home/cinemast/Desktop/gen/clientstub.h
+Server Stub genearted to: /home/cinemast/Desktop/gen/abstractserverstub.h
 ```
 
 ### Step 3: implement the abstract server stub ###
@@ -107,9 +107,7 @@ Server Stub genearted to: /Users/cinemast/Desktop/AbstractMyStubServer.h
 Extend the abstract server stub and implement all pure virtual (abstract) methods defined in `spec.json`.
 
 ```cpp
-#include <jsonrpc/rpc.h>
 #include <iostream>
-
 #include "abstractmystubserver.h"
 
 using namespace jsonrpc;
@@ -124,14 +122,16 @@ class MyStubServer : public AbstractMyStubServer
         virtual std::string sayHello(const std::string& name);
 };
 
-MyStubServer::MyStubServer() :
-    AbstractMyStubServer(new HttpServer(8080))
+MyStubServer::MyStubServer(AbstractServerConnector &connector) :
+    AbstractStubServer(connector)
 {
 }
+
 void MyStubServer::notifyServer()
 {
     cout << "Server got notified" << endl;
 }
+
 string MyStubServer::sayHello(const string &name)
 {
     return "Hello " + name;
@@ -139,7 +139,8 @@ string MyStubServer::sayHello(const string &name)
 
 int main()
 {
-    MyStubServer s;
+    HttpServer httpserver(8383);
+    MyStubServer s(httpserver);
     s.StartListening();
     getchar();
     s.StopListening();
@@ -152,39 +153,38 @@ In the main function the concrete server is instantiated and started. That is al
 Compile the server with:
 
 ```sh
-g++ main.cpp -ljsonrpc -o sampleserver
+g++ main.cpp -ljsonrpcserver -ljsonrpccommon -o sampleserver
 ```
 
 ### Step 4: Create the client application
 ```cpp
-#include <jsonrpc/rpc.h>
 #include <iostream>
-
-#include "mystubclient.h"
+#include "gen/stubclient.h"
 
 using namespace jsonrpc;
 using namespace std;
 
 int main()
 {
-    MyStubClient c(new HttpClient("http://localhost:8080"));
+    HttpClient httpclient("http://localhost:8383");
+    StubClient c(httpclient);
     try
     {
         cout << c.sayHello("Peter Knafl") << endl;
         c.notifyServer();
+        cout << " 3 + 5 = " << c.addNumbers(3,5) << endl;
     }
     catch (JsonRpcException e)
     {
         cerr << e.what() << endl;
     }
-	return 0;
 }
 ```
 
 Compile the client with:
 
 ```sh
-g++ main.cpp -ljsonrpc -o sampleclient
+g++ main.cpp -ljsonrpcclient -ljsonrpccommon -o sampleclient
 ```
 
 Roadmap for v0.3
@@ -200,7 +200,7 @@ Roadmap for v0.3
 - Review the interfaces to provide a more stable API for the future.
 - ~~Improve Memory management (use more references instead of pointers).~~
 - Bring back windows support.
-
+- CMake FindModule including macros for jsonrpcstub tool.
 
 Changes in v0.2.1
 ---------
