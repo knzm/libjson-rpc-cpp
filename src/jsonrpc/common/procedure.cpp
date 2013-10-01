@@ -114,11 +114,10 @@ void    Procedure::AddParameter                 (const string& name, jsontype_t 
 }
 bool    Procedure::ValidateNamedParameters      (const Json::Value &parameters) const
 {
-    map<string, jsontype_t>::const_iterator it = this->parametersName.begin();
-    bool ok = true;
-    while (ok == true && it != this->parametersName.end())
+    bool ok = parameters.isObject() || parameters.isNull();
+    for (map<string, jsontype_t>::const_iterator it = this->parametersName.begin(); ok == true && it != this->parametersName.end(); it++)
     {
-        if (!parameters.isMember(it->first.c_str()))
+        if (!parameters.isMember(it->first))
         {
             ok = false;
         }
@@ -126,7 +125,6 @@ bool    Procedure::ValidateNamedParameters      (const Json::Value &parameters) 
         {
             ok = this->ValidateSingleParameter(it->second, parameters[it->first]);
         }
-        it++;
     }
     return ok;
 }
