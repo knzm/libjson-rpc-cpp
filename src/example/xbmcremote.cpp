@@ -7,7 +7,7 @@
  * @license See attached LICENSE.txt
  ************************************************************************/
 
-#include "XbmcRemoteClient.h"
+#include "gen/xbmcremote.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -85,7 +85,8 @@ int main(int argc, char** argv) {
     {
         cout << "XBMC Remote: a,s,d,w for navigation, enter for select, escape or backspace for back button" << endl;
         try {
-            XbmcRemoteClient stub(new HttpClient(argv[1]));
+            HttpClient httpclient(argv[1]);
+            XbmcRemoteClient stub(httpclient);
             int key = 0;
             for (;;) {
 #ifdef __APPLE__

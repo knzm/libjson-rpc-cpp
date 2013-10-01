@@ -14,6 +14,14 @@ add_custom_command(OUTPUT stubclient.h
                    COMMENT "Generating Server Stubfiles"
                    VERBATIM)
 
+add_custom_command(OUTPUT xbmcremote.h
+                   COMMAND jsonrpcstub ARGS -i ${CMAKE_CURRENT_SOURCE_DIR}/xbmc_remote.json --cpp=${CMAKE_CURRENT_SOURCE_DIR}/gen/xbmcremote.h -c XbmcRemote
+                   MAIN_DEPENDENCY xbmc_remote.json
+                   DEPENDS jsonrpcstub
+                   COMMENT "Generating Server Stubfiles"
+                   VERBATIM)
+
+
 add_executable(simpleserversample simpleserver.cpp)
 target_link_libraries(simpleserversample jsonrpcserver)
 
@@ -26,5 +34,5 @@ target_link_libraries(stubclientsample jsonrpcclient)
 add_executable(stubserversample stubserver.cpp abstractstubserver.h)
 target_link_libraries(stubserversample jsonrpcserver)
 
-#add_executable(xbmcremote xbmcremote.cpp)
-#target_link_libraries(xbmcremote jsonrpc)
+add_executable(xbmcremote xbmcremote.cpp xbmcremote.h)
+target_link_libraries(xbmcremote jsonrpcclient)
