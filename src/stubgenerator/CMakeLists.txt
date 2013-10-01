@@ -5,6 +5,19 @@ find_package(Argtable REQUIRED)
 add_executable(jsonrpcstub ${jsonrpcstub_source})
 target_link_libraries(jsonrpcstub jsonrpccommon ${Argtable_LIBRARY})
 
+#Generate manpage
+IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+add_custom_command(OUTPUT jsonrpcstub.1.gz
+                   COMMAND gzip -c ${CMAKE_SOURCE_DIR}/dev/manpage > ${CMAKE_BINARY_DIR}/jsonrpcstub.1.gz
+                   MAIN_DEPENDENCY ${CMAKE_SOURCE_DIR}/dev/manpage
+                   COMMENT "Generating man pages"
+                   VERBATIM)
+
+add_custom_target(manpage ALL DEPENDS jsonrpcstub.1.gz)
+install(FILES ${CMAKE_BINARY_DIR}/jsonrpcstub.1.gz DESTINATION share/man/man1/)
+add_dependencies(jsonrpcstub manpage)
+ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+
 install(TARGETS jsonrpcstub LIBRARY DESTINATION lib
                       ARCHIVE DESTINATION lib
                       RUNTIME DESTINATION bin)

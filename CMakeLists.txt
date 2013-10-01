@@ -31,7 +31,6 @@ configure_file (
 )
 install(FILES ${PROJECT_BINARY_DIR}/version.h DESTINATION include/jsonrpc) 
 
-
 add_subdirectory(src/jsonrpc)
 add_subdirectory(src/stubgenerator)
 add_subdirectory(src/example)
@@ -77,7 +76,7 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 	SET(CPACK_PACKAGING_INSTALL_PREFIX "/usr/local")
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
-SET(CPACK_PACKAGE_DESCRIPTION "jsonrpc framework for C++, including server and client support with stubgenerator.")
+SET(CPACK_PACKAGE_DESCRIPTION "jsonrpc framework for C++, including server and client support and a stubgenerator for several languages.")
 SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "jsonrpc framework for C++")
 SET(CPACK_PACKAGE_VENDOR "Peter Spiess-Knafl")
 SET(CPACK_PACKAGE_CONTACT "Peter Spiess-Knafl <peter.knafl@gmail.com>")
@@ -87,13 +86,13 @@ SET(CPACK_PACKAGE_VERSION_PATCH "${PATCH_VERSION}")
 SET(CPACK_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}_${MAJOR_VERSION}.${MINOR_VERSION}.${CPACK_PACKAGE_VERSION_PATCH}")
 SET(CPACK_SOURCE_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}_${MAJOR_VERSION}.${MINOR_VERSION}.${CPACK_PACKAGE_VERSION_PATCH}")
 
-SET(CPACK_DEBIAN_PACKAGE_DEPENDS "libcurl4-nss-dev, libjsoncpp-dev")
+SET(CPACK_DEBIAN_PACKAGE_DEPENDS "libcurl4-nss-dev, libjsoncpp-dev, libargtable2-dev")
 
 SET(CPACK_DEBIAN_PACKAGE_PRIORITY "optional")
 SET(CPACK_DEBIAN_PACKAGE_SECTION "libs")
 SET(CPACK_DEBIAN_ARCHITECTURE ${CMAKE_SYSTEM_PROCESSOR})
 
-SET(CPACK_COMPONENTS_ALL jsonrpc jsoncpp mongoose jsonrpcstub)
+SET(CPACK_COMPONENTS_ALL jsonrpccommon jsonrpccommonStatic jsonrpcserver jsonrpcserverStatic jsonrpclient jsonrpcclientStatic jsonrpcstub)
 INCLUDE(CPack)
 
 ENDIF(EXISTS "${CMAKE_ROOT}/Modules/CPack.cmake")
