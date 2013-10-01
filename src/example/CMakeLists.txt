@@ -1,5 +1,8 @@
 file(COPY spec.json ssl_cert.pem DESTINATION ${CMAKE_BINARY_DIR}/out)
 
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gen)
+
+
 add_custom_command(OUTPUT abstractstubserver.h
                    COMMAND jsonrpcstub ARGS -i ${CMAKE_CURRENT_SOURCE_DIR}/spec.json -s ${CMAKE_CURRENT_SOURCE_DIR}/gen/abstractsubserver.h -c Stub
                    MAIN_DEPENDENCY spec.json
