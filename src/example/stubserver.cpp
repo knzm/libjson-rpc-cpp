@@ -9,12 +9,12 @@
 #include <jsonrpc/rpc.h>
 #include <iostream>
 
-#include "abstractmystubserver.h"
+#include "abstractstubserver.h"
 
 using namespace jsonrpc;
 using namespace std;
 
-class MyStubServer : public AbstractMyStubServer
+class MyStubServer : public AbstractStubServer
 {
     public:
         MyStubServer();

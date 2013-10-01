@@ -1,17 +1,17 @@
 [
-    {	//This is how you define a method with named parameters.
-        "method": "sayHello",
+    {	
+        "name": "sayHello",
         "params": {
             "name": "Peter"
         },
         "returns": "Hello Peter"
     },
-    {	//This is how you define a notification which does not take any parameters.
-        "notification": "notifyServer",
+    {	
+        "name": "notifyServer",
         "params": null
     },
-    {	//This is how you define a method with positional parameters.
-        "method": "addNumbers",
+    {	
+        "name": "addNumbers",
         "params": [
             3,
             4
