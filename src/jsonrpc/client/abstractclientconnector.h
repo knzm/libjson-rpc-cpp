@@ -18,8 +18,6 @@ namespace jsonrpc
     class AbstractClientConnector
     {
         public:
-            virtual ~AbstractClientConnector();
-
             virtual void SendRPCRequest(const std::string& message, std::string& result) throw(JsonRpcException) = 0;
     };
 } /* namespace jsonrpc */

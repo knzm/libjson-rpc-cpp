@@ -44,7 +44,7 @@ namespace jsonrpc {
              * @param requests - the map that holds the parameters for each method
              * @return the string representation of the request to be built.
              */
-            std::string BuildBatchRequest(batchProcedureCall_t& requests, bool isNotification);
+            std::string BuildBatchRequest(const batchProcedureCall_t& requests, bool isNotification);
 
             /**
              * @brief BuildRequest does the same as std::string jsonrpc::RpcProRpcProtocolClient::BuildRequest(const std::string& method, const Json::Value& parameter);
@@ -59,7 +59,7 @@ namespace jsonrpc {
              * @brief The same is valid as for
              * void jsonrpc::RpcProtocolClient::BuildRequest(const std::string& method, const Json::Value& parameter, std::string& result);
              */
-            void BuildBatchRequest(batchProcedureCall_t& requests, std::string& result, bool isNotification);
+            void BuildBatchRequest(const batchProcedureCall_t& requests, std::string& result, bool isNotification);
 
 
             /**

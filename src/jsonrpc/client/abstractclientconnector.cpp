@@ -12,8 +12,3 @@
 
 using namespace std;
 using namespace jsonrpc;
-
-AbstractClientConnector::~AbstractClientConnector()
-{
-
-}

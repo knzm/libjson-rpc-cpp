@@ -11,6 +11,7 @@
 
 #include <boost/test/unit_test.hpp>
 #include <jsonrpc/client.h>
+#include "server.h"
 
 using namespace jsonrpc;
 using namespace std;
@@ -37,6 +38,16 @@ BOOST_AUTO_TEST_CASE(test_client_httpclient_success)
     c.SetUrl("http://docs.google.com");
     c.SendRPCRequest("foo", result);
     BOOST_CHECK_EQUAL(result.substr(0, 15), "<!DOCTYPE html>");
+}
+
+BOOST_AUTO_TEST_CASE(test_client_clientprotocol_batchrequest)
+{
+    HttpServer sconn(8383);
+    HttpClient cconn("http://localhost:8383");
+    TestServer server(sconn);
+    Client client(cconn);
 
 
+
+    //client.BuildBatchRequest()
 }
