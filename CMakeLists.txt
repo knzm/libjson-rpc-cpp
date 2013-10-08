@@ -35,10 +35,9 @@ add_subdirectory(src/jsonrpc)
 add_subdirectory(src/stubgenerator)
 add_subdirectory(src/example)
 
-
 find_package(Boost COMPONENTS unit_test_framework)
 IF(Boost_FOUND)
-    message("Found Bosst Unit Suite -> Enabling test cases")
+    message(STATUS "Found Bosst Unit Suite -> Enabling test cases")
     ENABLE_TESTING()
     set(CTEST_OUTPUT_ON_FAILURE TRUE)
     add_subdirectory(src/test)
