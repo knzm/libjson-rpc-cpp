@@ -17,11 +17,3 @@ AbstractClientConnector::~AbstractClientConnector()
 {
 
 }
-
-string AbstractClientConnector::SendRPCResponse(const string &message) throw (JsonRpcException)
-{
-    string result;
-    this->SendRPCResponse(message, result);
-    return result;
-}
-

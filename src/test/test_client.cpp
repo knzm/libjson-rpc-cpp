@@ -7,6 +7,36 @@
  * @license See attached LICENSE.txt
  ************************************************************************/
 
-#define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE
 
+#include <boost/test/unit_test.hpp>
+#include <jsonrpc/client.h>
+
+using namespace jsonrpc;
+using namespace std;
+
+bool check_exception1(JsonRpcException const&ex)
+{
+    return ex.GetCode() == Errors::ERROR_CLIENT_CONNECTOR;
+}
+
+BOOST_AUTO_TEST_CASE(test_client_httpclient_error)
+{
+    HttpClient c("absdfasöj");
+    string result;
+    BOOST_CHECK_EXCEPTION(c.SendRPCRequest("foo", result), JsonRpcException, check_exception1);
+}
+
+BOOST_AUTO_TEST_CASE(test_client_httpclient_success)
+{
+    HttpClient c("http://www.google.at");
+    string result;
+    c.SendRPCRequest("foo", result);
+    BOOST_CHECK_EQUAL(result.substr(0, 15), "<!DOCTYPE html>");
+
+    c.SetUrl("http://docs.google.com");
+    c.SendRPCRequest("foo", result);
+    BOOST_CHECK_EQUAL(result.substr(0, 15), "<!DOCTYPE html>");
+
+
+}

@@ -35,8 +35,7 @@ static size_t writefunc(void *ptr, size_t size, size_t nmemb,
     s->ptr = (char*) realloc(s->ptr, new_len + 1);
     if (s->ptr == NULL)
     {
-        fprintf(stderr, "realloc() failed\n");
-        exit(EXIT_FAILURE);
+        throw JsonRpcException(Errors::ERROR_CLIENT_CONNECTOR, ": realloc for result buffer failed");
     }
     memcpy(s->ptr + s->len, ptr, size * nmemb);
     s->ptr[new_len] = '\0';
@@ -51,8 +50,7 @@ void init_string(struct string *s)
     s->ptr = (char*) malloc(s->len + 1);
     if (s->ptr == NULL)
     {
-        fprintf(stderr, "malloc() failed\n");
-        exit(EXIT_FAILURE);
+        throw JsonRpcException(Errors::ERROR_CLIENT_CONNECTOR, ": malloc for result buffer failed");
     }
     s->ptr[0] = '\0';
 }
@@ -78,10 +76,9 @@ HttpClient::~HttpClient()
     }
 }
 
-void HttpClient::SendRPCResponse(const std::string& message, std::string& result) throw (JsonRpcException)
+void HttpClient::SendRPCRequest(const std::string& message, std::string& result) throw (JsonRpcException)
 {
     CURLcode res;
-
     struct string s;
     init_string(&s);
 

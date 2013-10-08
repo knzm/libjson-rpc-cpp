@@ -20,7 +20,7 @@ void Client::CallMethod(const std::string &name, const Json::Value &paramter, Js
 {
     std::string request, response;
     protocol.BuildRequest(name, paramter, request, false);
-    connector.SendRPCResponse(request, response);
+    connector.SendRPCRequest(request, response);
     protocol.HandleResponse(response, result);
 }
 
@@ -36,5 +36,5 @@ void Client::CallNotification(const std::string& name, const Json::Value& parame
 {
     std::string request, response;
     protocol.BuildRequest(name, parameter, request, true);
-    connector.SendRPCResponse(request, response);
+    connector.SendRPCRequest(request, response);
 }
