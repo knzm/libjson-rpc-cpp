@@ -1,4 +1,7 @@
-add_executable(unit_testsuite unit_test.cpp server.cpp)
+file(GLOB_RECURSE test_source *.cpp)
+
+
+add_executable(unit_testsuite ${test_source})
 target_link_libraries(unit_testsuite ${Boost_LIBRARIES} jsonrpccommon jsonrpcclient jsonrpcserver)
 
 ADD_TEST(helloworld ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/unit_testsuite --run_test=test_helloworld)
