@@ -78,7 +78,7 @@ HttpClient::~HttpClient()
     }
 }
 
-void HttpClient::SendMessage(const std::string& message, std::string& result) throw (JsonRpcException)
+void HttpClient::SendRPCResponse(const std::string& message, std::string& result) throw (JsonRpcException)
 {
     CURLcode res;
 
