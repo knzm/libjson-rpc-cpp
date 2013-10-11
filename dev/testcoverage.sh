@@ -6,6 +6,14 @@ lcov --zerocounters --directory ../ -output-file coverage.info
 
 echo "Executing Test Suite"
 out/unit_testsuite
+echo "Executing stubgenerator"
+out/jsonrpcstub -i ../src/example/spec.json --cpp=stubclient.h --server=stubserver.h -c Stub
+
+echo "Executing Stubs"
+out/stubserver &
+out/stubclient
+
+killall stubserver
 
 echo "Grabbing Coverage"
 lcov --capture --directory ../ --output-file coverage.info
