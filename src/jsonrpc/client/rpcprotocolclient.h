@@ -10,7 +10,6 @@
 #ifndef RESPONSEHANDLER_H
 #define RESPONSEHANDLER_H
 
-#include <jsonrpc/common/abstractauthenticator.h>
 #include <jsonrpc/common/exception.h>
 #include <jsoncpp/json/value.h>
 #include <string>
@@ -29,7 +28,6 @@ namespace jsonrpc {
     {
         public:
             RpcProtocolClient();
-            RpcProtocolClient(AbstractAuthenticator& authenticator);
 
             /**
              * @brief This method builds a valid json-rpc 2.0 request object based on passed paramters.
@@ -90,7 +88,6 @@ namespace jsonrpc {
             static const std::string KEY_ERROR_MESSAGE;
 
         private:
-            AbstractAuthenticator* authenticator;
             int id;
 
             void BuildRequest(int id, const std::string& method, const Json::Value& parameter, Json::Value& result, bool isNotification);

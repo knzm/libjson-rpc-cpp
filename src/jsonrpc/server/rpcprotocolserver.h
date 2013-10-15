@@ -15,7 +15,6 @@
 #include <map>
 
 #include <jsonrpc/common/specificationparser.h>
-#include <jsonrpc/common/abstractauthenticator.h>
 #include "abstractrequesthandler.h"
 
 #define KEY_REQUEST_METHODNAME  "method"
@@ -32,8 +31,8 @@ namespace jsonrpc
     class RpcProtocolServer
     {
         public:
-            RpcProtocolServer(AbstractRequestHandler &requestHandler, std::vector<Procedure> &procedures, AbstractAuthenticator *auth = NULL);
-            RpcProtocolServer(AbstractRequestHandler &requestHandler, AbstractAuthenticator *auth = NULL);
+            RpcProtocolServer(AbstractRequestHandler &requestHandler, std::vector<Procedure> &procedures);
+            RpcProtocolServer(AbstractRequestHandler &requestHandler);
 
             virtual ~RpcProtocolServer();
 
@@ -43,13 +42,6 @@ namespace jsonrpc
              *  @param retValue a reference to string object which will hold the response after this method;
              */
             void HandleRequest(const std::string& request, std::string& retValue);
-
-            /**
-             * @brief This method sets an Authenticator mechanism for the server. The object is deleted
-             * automatically by the RpcProtocolServer instance.
-             * @param auth - the authenticator to be used.
-             */
-            void SetAuthenticator(AbstractAuthenticator* auth);
 
             /**
              * @brief addMethod adds a new method to the RpcProtocolServer. The added Procedure object is copied internally.
@@ -85,10 +77,6 @@ namespace jsonrpc
              * This map holds all procedures. The string holds the name of each procedure.
              */
             std::map<std::string, Procedure*> procedures;
-            /**
-             * this objects decides whether a request is allowed to be processed or not.
-             */
-            AbstractAuthenticator  *authManager;
             AbstractRequestHandler &requestHandler;
 
     };

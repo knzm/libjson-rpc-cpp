@@ -23,12 +23,7 @@ const std::string RpcProtocolClient::KEY_ERROR_CODE       = "code";
 const std::string RpcProtocolClient::KEY_ERROR_MESSAGE    = "message";
 
 RpcProtocolClient::RpcProtocolClient() :
-    authenticator(NULL), id(1)
-{
-}
-
-RpcProtocolClient::RpcProtocolClient(AbstractAuthenticator &authenticator) :
-    authenticator(&authenticator), id(1)
+    id(1)
 {
 }
 

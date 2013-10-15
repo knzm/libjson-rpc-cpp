@@ -14,8 +14,7 @@
 using namespace std;
 using namespace jsonrpc;
 
-RpcProtocolServer::RpcProtocolServer(AbstractRequestHandler &requestHandler, vector<Procedure> &procedures, AbstractAuthenticator* auth) :
-    authManager(auth),
+RpcProtocolServer::RpcProtocolServer(AbstractRequestHandler &requestHandler, vector<Procedure> &procedures) :
     requestHandler(requestHandler)
 {
     for (unsigned int i=0; i < procedures.size(); i++)
@@ -23,8 +22,7 @@ RpcProtocolServer::RpcProtocolServer(AbstractRequestHandler &requestHandler, vec
         this->procedures[procedures.at(i).GetProcedureName()] = new Procedure(procedures.at(i));
     }
 }
-RpcProtocolServer::RpcProtocolServer(AbstractRequestHandler &requestHandler, AbstractAuthenticator* auth) :
-    authManager(auth),
+RpcProtocolServer::RpcProtocolServer(AbstractRequestHandler &requestHandler) :
     requestHandler(requestHandler)
 {
 }
@@ -60,14 +58,6 @@ void RpcProtocolServer::HandleRequest       (const string& request, string& retV
         response = Errors::GetErrorBlock(Json::nullValue, Errors::ERROR_RPC_JSON_PARSE_ERROR);
     }
     retValue = w.write(response);
-}
-void RpcProtocolServer::SetAuthenticator    (AbstractAuthenticator *auth)
-{
-    if(this->authManager != NULL)
-    {
-        delete this->authManager;
-    }
-    this->authManager = auth;
 }
 void RpcProtocolServer::HandleSingleRequest (Json::Value &req, Json::Value& response)
 {
@@ -121,16 +111,7 @@ int  RpcProtocolServer::ValidateRequest     (const Json::Value& request)
             {
                 error = Errors::ERROR_SERVER_PROCEDURE_IS_METHOD;
             }
-            else if (proc->ValdiateParameters(request[KEY_REQUEST_PARAMETERS]))
-            {
-                if (this->authManager != NULL)
-                {
-                    error = this->authManager->CheckPermission(
-                                request[KEY_AUTHENTICATION],
-                                proc->GetProcedureName());
-                }
-            }
-            else
+            else if (!proc->ValdiateParameters(request[KEY_REQUEST_PARAMETERS]))
             {
                 error = Errors::ERROR_RPC_INVALID_PARAMS;
             }
@@ -154,12 +135,6 @@ void RpcProtocolServer::ProcessRequest      (const Json::Value& request, Json::V
         response[KEY_REQUEST_VERSION] = JSON_RPC_VERSION;
         response[KEY_RESPONSE_RESULT] = result;
         response[KEY_REQUEST_ID] = request[KEY_REQUEST_ID];
-        if (this->authManager != NULL)
-        {
-            this->authManager->ProcessAuthentication(
-                        request[KEY_AUTHENTICATION],
-                        response[KEY_AUTHENTICATION]);
-        }
     }
     else
     {
