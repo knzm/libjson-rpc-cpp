@@ -32,44 +32,20 @@ RpcProtocolClient::RpcProtocolClient(AbstractAuthenticator &authenticator) :
 {
 }
 
-void RpcProtocolClient::BuildRequest(const std::string &method, const Json::Value &parameter, std::string &result, bool isNotification)
+void        RpcProtocolClient::BuildRequest         (const std::string &method, const Json::Value &parameter, std::string &result, bool isNotification)
 {
     Json::Value request;
     Json::FastWriter writer;
-    this->BuildRequest(method,parameter,request, isNotification);
+    this->BuildRequest(1, method,parameter,request, isNotification);
     result = writer.write(request);
 }
-
-std::string RpcProtocolClient::BuildBatchRequest(const batchProcedureCall_t &requests, bool isNotification)
-{
-    std::string result;
-    this->BuildBatchRequest(requests, result, isNotification);
-    return result;
-}
-
-void RpcProtocolClient::BuildBatchRequest(const batchProcedureCall_t &requests, std::string &result, bool isNotification)
-{
-    Json::Value singlerequest;
-    Json::Value res;
-    Json::FastWriter writer;
-    int i=0;
-    for(batchProcedureCall_t::const_iterator it = requests.begin(); it != requests.end(); it++)
-    {
-        this->BuildRequest(it->first, it->second, singlerequest, isNotification);
-        res[i] = singlerequest;
-        i++;
-    }
-    result = writer.write(res);
-}
-
-Json::Value RpcProtocolClient::HandleResponse(const std::string &response) throw(JsonRpcException)
+Json::Value RpcProtocolClient::HandleResponse       (const std::string &response) throw(JsonRpcException)
 {
     Json::Value result;
     this->HandleResponse(response, result);
     return result;
 }
-
-void RpcProtocolClient::HandleResponse(const std::string &response, Json::Value& result) throw(JsonRpcException)
+void        RpcProtocolClient::HandleResponse       (const std::string &response, Json::Value& result) throw(JsonRpcException)
 {
     Json::Reader reader;
     Json::Value value;
@@ -96,20 +72,17 @@ void RpcProtocolClient::HandleResponse(const std::string &response, Json::Value&
         throw JsonRpcException(Errors::ERROR_RPC_JSON_PARSE_ERROR, " " + response);
     }
 }
-
-void RpcProtocolClient::resetId()
+void        RpcProtocolClient::resetId              ()
 {
     this->id = 1;
 }
-
-void RpcProtocolClient::BuildRequest(const std::string &method, const Json::Value &parameter, Json::Value &result, bool isNotification)
+void        RpcProtocolClient::BuildRequest         (int id, const std::string &method, const Json::Value &parameter, Json::Value &result, bool isNotification)
 {
     result[KEY_PROTOCOL_VERSION] = "2.0";
     result[KEY_PROCEDURE_NAME] = method;
     result[KEY_PARAMETER] = parameter;
-
     if(!isNotification)
     {
-        result[KEY_ID] = id++;
+        result[KEY_ID] = id;
     }
 }

@@ -19,6 +19,10 @@ namespace jsonrpc {
 
     typedef std::map<const std::string, const Json::Value> batchProcedureCall_t;
 
+    //int defines id field
+    typedef std::map<int, const Json::Value> batchProcedureRequest;
+    typedef batchProcedureRequest batchProcedureResponse;
+
     /**
      * @brief The RpcProtocolClient class handles the json-rpc 2.0 protocol for the client side.
      */
@@ -39,14 +43,6 @@ namespace jsonrpc {
             std::string BuildRequest(const std::string& method, const Json::Value& parameter, bool isNotification);
 
             /**
-             * @brief BuildBatchRequest, this method builts a batch request. jsonrpc::batchProcedureCall_t is basically a map.
-             * This method only works for either batch method calls, or batch notification calls, but not mixed ones.
-             * @param requests - the map that holds the parameters for each method
-             * @return the string representation of the request to be built.
-             */
-            std::string BuildBatchRequest(const batchProcedureCall_t& requests, bool isNotification);
-
-            /**
              * @brief BuildRequest does the same as std::string jsonrpc::RpcProRpcProtocolClient::BuildRequest(const std::string& method, const Json::Value& parameter);
              * The only difference here is that the result is returend by value, using the result parameter.
              * @param method - name of method or notification to be called
@@ -54,13 +50,6 @@ namespace jsonrpc {
              * @param result - the string representation will be hold within this reference.
              */
             void BuildRequest(const std::string& method, const Json::Value& parameter, std::string& result, bool isNotification);
-
-            /**
-             * @brief The same is valid as for
-             * void jsonrpc::RpcProtocolClient::BuildRequest(const std::string& method, const Json::Value& parameter, std::string& result);
-             */
-            void BuildBatchRequest(const batchProcedureCall_t& requests, std::string& result, bool isNotification);
-
 
             /**
              * @brief This method parses the result of a json-rpc-server and returns the result object according
@@ -98,7 +87,7 @@ namespace jsonrpc {
             AbstractAuthenticator* authenticator;
             int id;
 
-            void BuildRequest(const std::string& method, const Json::Value& parameter, Json::Value& result, bool isNotification);
+            void BuildRequest(int id, const std::string& method, const Json::Value& parameter, Json::Value& result, bool isNotification);
     };
 }
 #endif // RESPONSEHANDLER_H

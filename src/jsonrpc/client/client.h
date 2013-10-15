@@ -12,6 +12,7 @@
 
 #include "abstractclientconnector.h"
 #include "rpcprotocolclient.h"
+#include "batchcall.h"
 #include <jsoncpp/json/json.h>
 
 #include <vector>
@@ -27,12 +28,11 @@ namespace jsonrpc
             void        CallMethod          (const std::string &name, const Json::Value &paramter, Json::Value& result) throw (JsonRpcException);
             Json::Value CallMethod          (const std::string &name, const Json::Value& paramter) throw (JsonRpcException);
 
-            void        CallMethods         (const batchProcedureCall_t &calls, Json::Value &result) throw (JsonRpcException);
-            Json::Value CallMethods         (const batchProcedureCall_t &calls) throw (JsonRpcException);
+            void        CallProcedures      (const BatchCall &calls, Json::Value &result) throw (JsonRpcException);
+            Json::Value CallProcedures      (const BatchCall &calls) throw (JsonRpcException);
 
             void        CallNotification    (const std::string& name, const Json::Value& paramter) throw (JsonRpcException);
             void        CallNotifications   (const batchProcedureCall_t &calls) throw (JsonRpcException);
-
 
         private:
            AbstractClientConnector &connector;

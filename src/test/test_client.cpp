@@ -49,5 +49,6 @@ BOOST_AUTO_TEST_CASE(test_client_clientprotocol_batchrequest)
 
 
 
+
     //client.BuildBatchRequest()
 }
