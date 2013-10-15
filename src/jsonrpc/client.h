@@ -13,5 +13,6 @@
 #include <jsonrpc/client/abstractclientconnector.h>
 #include <jsonrpc/client/client.h>
 #include <jsonrpc/client/httpclient.h>
+#include <jsonrpc/client/batchcall.h>
 
 #endif /* JSONRPCCPP_CLIENT_H_ */

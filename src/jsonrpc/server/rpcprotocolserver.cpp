@@ -92,14 +92,16 @@ void RpcProtocolServer::HandleBatchRequest  (Json::Value &req, Json::Value& resp
 {
     for (unsigned int i = 0; i < req.size(); i++)
     {
-        this->HandleSingleRequest(req, response[i]);
+        Json::Value result;
+        this->HandleSingleRequest(req[i], result);
+        response.append(result);
     }
 }
 int  RpcProtocolServer::ValidateRequest     (const Json::Value& request)
 {
     int error = 0;
     Procedure* proc;
-    if (!(request.isMember(KEY_REQUEST_METHODNAME)
+    if (!request.isObject() || !(request.isMember(KEY_REQUEST_METHODNAME)
           && request.isMember(KEY_REQUEST_VERSION)
           && request.isMember(KEY_REQUEST_PARAMETERS)))
     {

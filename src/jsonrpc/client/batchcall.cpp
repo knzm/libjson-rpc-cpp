@@ -15,11 +15,11 @@ using namespace std;
 
 
 BatchCall::BatchCall() :
-    id(0)
+    id(1)
 {
 }
 
-void    BatchCall::addCall      (const string &methodname, const Json::Value &params, bool isNotification)
+int     BatchCall::addCall      (const string &methodname, const Json::Value &params, bool isNotification)
 {
     Json::Value call;
     call[RpcProtocolClient::KEY_PROTOCOL_VERSION] = "2.0";
@@ -27,9 +27,10 @@ void    BatchCall::addCall      (const string &methodname, const Json::Value &pa
     call[RpcProtocolClient::KEY_PARAMETER] = params;
     if(!isNotification)
     {
-        call[RpcProtocolClient::KEY_ID] = id++;
+        call[RpcProtocolClient::KEY_ID] = this->id++;
     }
     result.append(call);
+    return call[RpcProtocolClient::KEY_ID].asInt();
 }
 string  BatchCall::toString     (bool fast) const
 {

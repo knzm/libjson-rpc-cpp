@@ -20,8 +20,7 @@ namespace jsonrpc {
     typedef std::map<const std::string, const Json::Value> batchProcedureCall_t;
 
     //int defines id field
-    typedef std::map<int, const Json::Value> batchProcedureRequest;
-    typedef batchProcedureRequest batchProcedureResponse;
+    typedef std::map<int, Json::Value> batchProcedureResponse;
 
     /**
      * @brief The RpcProtocolClient class handles the json-rpc 2.0 protocol for the client side.
@@ -65,8 +64,15 @@ namespace jsonrpc {
              * @brief Does the same as Json::Value RpcProtocolClient::HandleResponse(const std::string& response) throw(Exception)
              * but returns result as reference for performance speed up.
              */
-            void HandleResponse(const std::string& response, Json::Value& result) throw (JsonRpcException);
+            void HandleResponse(const std::string &response, Json::Value &result) throw (JsonRpcException);
 
+            /**
+             * @brief HandleResponse
+             * @param response
+             * @param result
+             * @return response id
+             */
+            int HandleResponse(const Json::Value &response, Json::Value &result) throw (JsonRpcException);
 
             /**
              * @brief resets the id used for building request objects.

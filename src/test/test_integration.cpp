@@ -13,6 +13,7 @@
 #include <boost/test/unit_test.hpp>
 #include <jsonrpc/server.h>
 #include <jsonrpc/client.h>
+#include <iostream>
 #include "server.h"
 
 using namespace jsonrpc;
@@ -135,8 +136,30 @@ BOOST_AUTO_TEST_CASE(test_jsonrpcprotocol)
     BOOST_CHECK_THROW(client.CallMethod("incrementCounter", v), JsonRpcException);
 }
 
-BOOST_AUTO_TEST_CASE(test_specification)
+BOOST_AUTO_TEST_CASE(test_batchcall)
 {
+    HttpServer sconn(8383);
+    HttpClient cconn("http://localhost:8383");
+    TestServer server(sconn);
+    Client client(cconn);
+    server.StartListening();
+
+    BatchCall bc;
+    Json::Value params1;
+    params1["value1"] = 3;
+    params1["value2"] = 5;
+    int id1 = bc.addCall("add", params1);
+
+    params1.clear();
+    params1["value1"] = 5;
+    params1["value2"] = 3;
+    int id2 = bc.addCall("sub", params1);
+
+    batchProcedureResponse response;
+    client.CallProcedures(bc, response);
+
+    BOOST_CHECK_EQUAL(response.at(id1).asInt(), 8);
+    BOOST_CHECK_EQUAL(response.at(id2).asInt(), 2);
 
 }
 

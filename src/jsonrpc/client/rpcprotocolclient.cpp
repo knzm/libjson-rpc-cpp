@@ -51,26 +51,32 @@ void        RpcProtocolClient::HandleResponse       (const std::string &response
     Json::Value value;
     if(reader.parse(response, value))
     {
-        if(value.isMember(KEY_ID) && value.isMember(KEY_PROTOCOL_VERSION) && (value.isMember(KEY_RESULT) || value.isMember(KEY_ERROR)))
-        {
-            if(value.isMember(KEY_RESULT))
-            {
-                result = value[KEY_RESULT];
-            }
-            else
-            {
-                throw JsonRpcException(value[KEY_ERROR][KEY_ERROR_CODE].asInt(), value[KEY_ERROR][KEY_ERROR_MESSAGE].asString());
-            }
-        }
-        else
-        {
-            throw JsonRpcException(Errors::ERROR_CLIENT_INVALID_RESPONSE, " " + response);
-        }
+        this->HandleResponse(value, result);
     }
     else
     {
         throw JsonRpcException(Errors::ERROR_RPC_JSON_PARSE_ERROR, " " + response);
     }
+}
+
+int RpcProtocolClient::HandleResponse(const Json::Value &value, Json::Value &result) throw(JsonRpcException)
+{
+    if(value.isMember(KEY_ID) && value.isMember(KEY_PROTOCOL_VERSION) && (value.isMember(KEY_RESULT) || value.isMember(KEY_ERROR)))
+    {
+        if(value.isMember(KEY_RESULT))
+        {
+            result = value[KEY_RESULT];
+        }
+        else
+        {
+            throw JsonRpcException(value[KEY_ERROR][KEY_ERROR_CODE].asInt(), value[KEY_ERROR][KEY_ERROR_MESSAGE].asString());
+        }
+    }
+    else
+    {
+        throw JsonRpcException(Errors::ERROR_CLIENT_INVALID_RESPONSE, " " + value.toStyledString());
+    }
+    return value[KEY_ID].asInt();
 }
 void        RpcProtocolClient::resetId              ()
 {

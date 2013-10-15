@@ -66,7 +66,7 @@ Json::Value Errors::GetErrorBlock   (const Json::Value& request, const int& erro
     error["error"]["code"] = errorCode;
     error["error"]["message"] = GetErrorMessage(errorCode);
 
-    if(request["id"].isNull())
+    if(!request.isObject() || request["id"].isNull())
     {
         error["id"] = Json::nullValue;
     }

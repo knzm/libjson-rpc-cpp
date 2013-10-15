@@ -26,10 +26,10 @@ namespace jsonrpc
             Client(AbstractClientConnector &connector);
 
             void        CallMethod          (const std::string &name, const Json::Value &paramter, Json::Value& result) throw (JsonRpcException);
-            Json::Value CallMethod          (const std::string &name, const Json::Value& paramter) throw (JsonRpcException);
+            Json::Value CallMethod          (const std::string &name, const Json::Value &paramter) throw (JsonRpcException);
 
-            void        CallProcedures      (const BatchCall &calls, Json::Value &result) throw (JsonRpcException);
-            Json::Value CallProcedures      (const BatchCall &calls) throw (JsonRpcException);
+            void                    CallProcedures      (const BatchCall &calls, batchProcedureResponse &response) throw (JsonRpcException);
+            batchProcedureResponse  CallProcedures      (const BatchCall &calls) throw (JsonRpcException);
 
             void        CallNotification    (const std::string& name, const Json::Value& paramter) throw (JsonRpcException);
             void        CallNotifications   (const batchProcedureCall_t &calls) throw (JsonRpcException);

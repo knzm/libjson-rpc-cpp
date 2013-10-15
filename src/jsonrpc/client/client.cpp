@@ -8,7 +8,6 @@
  ************************************************************************/
 
 #include "client.h"
-
 using namespace jsonrpc;
 
 Client::Client(AbstractClientConnector &connector)
@@ -24,18 +23,30 @@ void Client::CallMethod(const std::string &name, const Json::Value &paramter, Js
     protocol.HandleResponse(response, result);
 }
 
-void Client::CallProcedures(const BatchCall &calls, Json::Value &result) throw(JsonRpcException)
+void Client::CallProcedures(const BatchCall &calls, batchProcedureResponse &result) throw(JsonRpcException)
 {
     std::string request, response;
     request = calls.toString();
     connector.SendRPCRequest(request, response);
     Json::Reader reader;
-    reader.parse(response, result);
+    Json::Value tmpresult;
+
+    if (!reader.parse(response, tmpresult) || !tmpresult.isArray())
+    {
+        throw JsonRpcException(Errors::ERROR_CLIENT_INVALID_RESPONSE, "Array expected.");
+    }
+
+    for (unsigned int i=0; i < tmpresult.size(); i++)
+    {
+        Json::Value singleResult;
+        int id = this->protocol.HandleResponse(tmpresult[i], singleResult);
+        result[id] = singleResult;
+    }
 }
 
-Json::Value Client::CallProcedures(const BatchCall &calls) throw(JsonRpcException)
+batchProcedureResponse Client::CallProcedures(const BatchCall &calls) throw(JsonRpcException)
 {
-    Json::Value result;
+    batchProcedureResponse result;
     this->CallProcedures(calls, result);
     return result;
 }
