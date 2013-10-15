@@ -10,5 +10,4 @@ ADD_TEST(remotecalculator ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/unit_testsuite --run
 ADD_TEST(remotecounter ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/unit_testsuite --run_test=test_remotecounter)
 ADD_TEST(clientexception ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/unit_testsuite --run_test=test_clientexception)
 ADD_TEST(jsonrpcprotocol ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/unit_testsuite --run_test=test_jsonrpcprotocol)
-ADD_TEST(specification ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/unit_testsuite --run_test=test_specification)
 ADD_TEST(parametervalidation ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/unit_testsuite --run_test=test_parametervalidation)
