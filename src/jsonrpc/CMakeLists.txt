@@ -21,7 +21,6 @@ target_link_libraries(jsonrpcclient jsonrpccommon ${CURL_LIBRARIES})
 target_link_libraries(jsonrpcclientStatic jsonrpccommonStatic ${CURL_LIBRARIES})
 set_target_properties(jsonrpcclientStatic PROPERTIES OUTPUT_NAME jsonrpcclient)
 
-<<<<<<< HEAD
 add_library(jsonrpcserver SHARED ${jsonrpc_source_server} ${jsonrpc_header_server})
 add_library(jsonrpcserverStatic STATIC ${jsonrpc_source_server} ${jsonrpc_header_server})
 target_link_libraries(jsonrpcserver jsonrpccommon ${CMAKE_DL_LIBS})
@@ -30,10 +29,7 @@ set_target_properties(jsonrpcserverStatic PROPERTIES OUTPUT_NAME jsonrpcserver)
 
 set(VERSION_STRING ${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION})
 set_target_properties(jsonrpccommon jsonrpccommonStatic jsonrpcclient jsonrpcclientStatic jsonrpcserver jsonrpcserverStatic PROPERTIES VERSION "${VERSION_STRING}" SOVERSION "${VERSION_MAJOR}")
-=======
-target_link_libraries(jsonrpc pthread dl ${CURL_LIBRARIES})
-target_link_libraries(jsonrpcStatic pthread dl ${CURL_LIBRARIES})
->>>>>>> master
+
 
 install(FILES ${jsonrpc_header}        DESTINATION include/jsonrpc)
 install(FILES ${jsonrpc_header_common} DESTINATION include/jsonrpc/common)
