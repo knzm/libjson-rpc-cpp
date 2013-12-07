@@ -33,8 +33,6 @@ namespace jsonrpc
         protected:
             std::string             stubname;
             std::vector<Procedure>  &procedures;
-
-
     };
 }
 

@@ -66,13 +66,13 @@ Json::Value Errors::GetErrorBlock   (const Json::Value& request, const int& erro
     error["error"]["code"] = errorCode;
     error["error"]["message"] = GetErrorMessage(errorCode);
 
-    if(!request.isObject() || request["id"].isNull())
+    if(request["id"].isNull() || request["id"].isInt() || request["id"].isUInt() || request["id"].isString())
     {
-        error["id"] = Json::nullValue;
+        error["id"] = request["id"];
     }
     else
     {
-        error["id"] = request["id"].asInt();
+        error["id"] = Json::nullValue;
     }
     return error;
 }

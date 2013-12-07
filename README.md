@@ -53,14 +53,44 @@ sudo make install
 #only required for linux
 sudo ldconfig	
 ```
-
-That's all you need.
-
 To uninstall the library and the stubgenerator, type:
 
 ```sh
 cd build && sudo make uninstall
 ```
+
+That's all you need.
+
+
+Under CentOS based (automake) systems type:
+
+```sh
+sudo yum install automake autoconf libtool libcurl-devel
+```
+
+Open a terminal and copy the following commands:
+
+```sh
+git clone git://github.com/cinemast/libjson-rpc-cpp.git
+cd libjson-rpc-cpp/
+autoreconf -if
+cd build
+../configure
+make
+#Not required, but makes it easier to use
+sudo make install
+#only required for linux
+sudo ldconfig	
+```
+To build RPM package for Fedora/Redhat/CentOS systems type:
+
+```sh
+sudo yum install rpm-build
+cd libjson-rpc-cpp/build
+../configure
+make rpm
+```
+Your packages will be available under libjson-rpc-cpp/build/RPMBUILD/RPMS folder
 
 Simple Example
 --------
