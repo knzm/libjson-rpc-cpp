@@ -93,6 +93,5 @@ string CPPClientStubGenerator::generateMethod(Procedure &proc)
         replaceAll(tmp, "<return_type>", "void");
         replaceAll(tmp, "<return_statement>", "this->CallNotification(\"" + proc.GetProcedureName() + "\",p);");
     }
-
     return tmp;
 }
