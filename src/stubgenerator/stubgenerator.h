@@ -13,6 +13,8 @@
 #include <string>
 #include <jsonrpc/common/procedure.h>
 
+#include "codegenerator.h"
+
 namespace jsonrpc
 {
     enum connectiontype_t {CONNECTION_HTTP};
@@ -20,19 +22,20 @@ namespace jsonrpc
     class StubGenerator
     {
         public:
-            StubGenerator(const std::string& stubname, std::vector<Procedure> &procedures);
+            StubGenerator(const std::string& stubname, std::vector<Procedure> &procedures, CodeGenerator &cg);
             virtual ~StubGenerator();
 
-            virtual std::string generateStubToFile(const std::string& outputpath);
+
             virtual std::string getStubName();
+            virtual void generateStub() = 0;
 
-            virtual std::string generateStub() = 0;
-
-            static void replaceAll(std::string& text, const std::string& fnd, const std::string& rep);
+            static std::string replaceAll(const std::string& text, const std::string& fnd, const std::string& rep);
+            static void replaceAll(std::string &text, const std::string &find, const std::string &replace);
 
         protected:
             std::string             stubname;
             std::vector<Procedure>  &procedures;
+            CodeGenerator           &cg;
     };
 }
 

@@ -15,8 +15,8 @@
 
 #include <argtable2.h>
 
-#include "cppclientstubgenerator.h"
-#include "serverstubgenerator.h"
+//#include "cppclientstubgenerator.h"
+#include "server/cppserverstubgenerator.h"
 
 using namespace std;
 using namespace jsonrpc;
@@ -57,17 +57,15 @@ int main(int argc, char** argv)
 
     std::vector<Procedure> procedures = SpecificationParser::GetProceduresFromFile(inputfile->filename[0]);
 
+    CodeGenerator cg(server->sval[0]);
+    CPPServerStubGenerator stubgenerator("FoobarStub", procedures, cg);
+    stubgenerator.generateStub();
+
     try {
         if (server->count > 0)
         {
-            ServerStubGenerator serverstub(classname->sval[0], procedures);
-            cout << "Generated Server Stub to: " << serverstub.generateStubToFile(server->sval[0]) << endl;
-        }
-
-        if (cppclient->count > 0)
-        {
-            CPPClientStubGenerator cppclientstub(classname->sval[0], procedures);
-            cout << "Genarted C++ Client Stub to: " << cppclientstub.generateStubToFile(cppclient->sval[0]) << endl;
+            CPPServerStubGenerator serverstub(classname->sval[0], procedures, cg);
+            serverstub.generateStub();
         }
     } catch (const JsonRpcException &ex)
     {

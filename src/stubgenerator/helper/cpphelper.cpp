@@ -1,19 +1,19 @@
 /*************************************************************************
  * libjson-rpc-cpp
  *************************************************************************
- * @file    cppstubgenerator.cpp
+ * @file    cpphelper.cpp
  * @date    29.09.2013
  * @author  Peter Spiess-Knafl <peter.knafl@gmail.com>
  * @license See attached LICENSE.txt
  ************************************************************************/
 
-#include "cppstubgenerator.h"
+#include "cpphelper.h"
 #include <sstream>
 
 using namespace std;
 using namespace jsonrpc;
 
-string  CPPStubGenerator::toCppType                        (jsontype_t type, bool isConst, bool isReference)
+string  CPPHelper::toCppType                        (jsontype_t type, bool isConst, bool isReference)
 {
     string result;
     switch(type)
@@ -44,7 +44,7 @@ string  CPPStubGenerator::toCppType                        (jsontype_t type, boo
     }
     return result;
 }
-string  CPPStubGenerator::toCppConversion                  (jsontype_t type)
+string  CPPHelper::toCppConversion                  (jsontype_t type)
 {
     string result;
     switch(type)
@@ -67,7 +67,7 @@ string  CPPStubGenerator::toCppConversion                  (jsontype_t type)
     }
     return result;
 }
-string  CPPStubGenerator::toString                         (jsontype_t type)
+string  CPPHelper::toString                         (jsontype_t type)
 {
     string result;
     switch(type)
@@ -95,7 +95,7 @@ string  CPPStubGenerator::toString                         (jsontype_t type)
     }
     return result;
 }
-string  CPPStubGenerator::generateParameterDeclarationList (Procedure &proc)
+string  CPPHelper::generateParameterDeclarationList (Procedure &proc)
 {
     stringstream param_string;
     parameterNameList_t list = proc.GetParameters();
@@ -109,7 +109,7 @@ string  CPPStubGenerator::generateParameterDeclarationList (Procedure &proc)
     }
     return param_string.str();
 }
-string  CPPStubGenerator::normalizeString                  (const string &text)
+string  CPPHelper::normalizeString                  (const string &text)
 {
     string result = text;
     for(unsigned int i=0; i < text.length(); i++)
@@ -121,7 +121,7 @@ string  CPPStubGenerator::normalizeString                  (const string &text)
     }
     return result;
 }
-string  CPPStubGenerator::isCppConversion                  (jsontype_t type)
+string  CPPHelper::isCppConversion                  (jsontype_t type)
 {
     string result;
     switch(type)

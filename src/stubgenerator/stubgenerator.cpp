@@ -16,32 +16,34 @@
 using namespace std;
 using namespace jsonrpc;
 
-StubGenerator::StubGenerator    (const string &stubname, std::vector<Procedure> &procedures) :
+StubGenerator::StubGenerator    (const string &stubname, std::vector<Procedure> &procedures, CodeGenerator &cg) :
     stubname                    (stubname),
-    procedures                  (procedures)
+    procedures                  (procedures),
+    cg                          (cg)
 {
 }
+
 StubGenerator::~StubGenerator   ()
 {
 }
 
-void    StubGenerator::replaceAll                       (string &text, const string &fnd, const string &rep)
+string    StubGenerator::replaceAll                       (const string &text, const string &fnd, const string &rep)
 {
-    size_t pos = text.find(fnd);
+    string result = text;
+    replaceAll(result, fnd, rep);
+    return result;
+}
+
+void StubGenerator::replaceAll(string &result, const string &find, const string &replace)
+{
+    size_t pos = result.find(find);
     while (pos != string::npos)
     {
-        text.replace(pos, fnd.length(), rep);
-        pos = text.find(fnd, pos + rep.length());
+        result.replace(pos, find.length(), replace);
+        pos = result.find(find, pos + replace.length());
     }
 }
-string  StubGenerator::generateStubToFile               (const string &path)
-{
-    ofstream stream;
-    stream.open(path.c_str(), ios_base::out);
-    stream << this->generateStub();
-    stream.close();
-    return path;
-}
+
 string  StubGenerator::getStubName                      ()
 {
     return this->stubname;

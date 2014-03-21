@@ -33,7 +33,7 @@ install(FILES ${PROJECT_BINARY_DIR}/version.h DESTINATION include/jsonrpc)
 
 add_subdirectory(src/jsonrpc)
 add_subdirectory(src/stubgenerator)
-add_subdirectory(src/example)
+#add_subdirectory(src/example)
 
 find_package(Boost COMPONENTS unit_test_framework)
 IF(Boost_FOUND)
