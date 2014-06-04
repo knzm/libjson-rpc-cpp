@@ -6,6 +6,7 @@
 #include <iostream>
 #include <sstream>
 #include <iomanip>
+#include <limits>
 
 #if _MSC_VER >= 1400 // VC++ 8.0
 #pragma warning( disable : 4996 )   // disable warning about strdup being deprecated.
@@ -65,6 +66,13 @@ std::string valueToString( UInt value )
 
 std::string valueToString( double value )
 {
+   if (value != value) return "NaN";
+   if (std::numeric_limits<double>::has_infinity) {
+      double inf = std::numeric_limits<double>::infinity();
+      if (value == inf) return "Infinity";
+      if (value == -inf) return "-Infinity";
+   }
+
    char buffer[32];
 #if defined(_MSC_VER) && defined(__STDC_SECURE_LIB__) // Use secure version with visual studio 2005 to avoid warning. 
    sprintf_s(buffer, sizeof(buffer), "%#.16g", value); 
