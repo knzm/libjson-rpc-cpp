@@ -22,3 +22,6 @@ target_link_libraries(specification jsonrpc)
 
 add_executable(parametervalidation parametervalidation.cpp)
 target_link_libraries(parametervalidation jsonrpc)
+
+add_executable(jsonvalue jsonvalue.cpp)
+target_link_libraries(jsonvalue jsonrpc)
