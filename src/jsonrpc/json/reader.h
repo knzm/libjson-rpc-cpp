@@ -86,7 +86,10 @@ namespace Json {
          tokenArraySeparator,
          tokenMemberSeparator,
          tokenComment,
-         tokenError
+         tokenError,
+         tokenPositiveInfinity,
+         tokenNegativeInfinity,
+         tokenNaN
       };
 
       class Token

@@ -204,6 +204,9 @@ Reader::readValue()
       commentsBefore_ = "";
    }
 
+   static_assert(std::numeric_limits<float>::is_iec559, "IEEE 754 required");
+   double nan = std::numeric_limits<float>::quiet_NaN();
+   double inf = std::numeric_limits<float>::infinity();
 
    switch ( token.type_ )
    {
@@ -227,6 +230,15 @@ Reader::readValue()
       break;
    case tokenNull:
       currentValue() = Value();
+      break;
+   case tokenNaN:
+      currentValue() = nan;
+      break;
+   case tokenPositiveInfinity:
+      currentValue() = inf;
+      break;
+   case tokenNegativeInfinity:
+      currentValue() = -inf;
       break;
    default:
       return addError( "Syntax error: value, object or array expected.", token );
@@ -309,9 +321,18 @@ Reader::readToken( Token &token )
    case '7':
    case '8':
    case '9':
-   case '-':
       token.type_ = tokenNumber;
       readNumber();
+      break;
+   case '-':
+      if ( match( "Infinity", 8 ) ) {
+          ok = true;
+          token.type_ = tokenNegativeInfinity;
+      }
+      else {
+          token.type_ = tokenNumber;
+          readNumber();
+      }
       break;
    case 't':
       token.type_ = tokenTrue;
@@ -324,6 +345,14 @@ Reader::readToken( Token &token )
    case 'n':
       token.type_ = tokenNull;
       ok = match( "ull", 3 );
+      break;
+   case 'I':
+      token.type_ = tokenPositiveInfinity;
+      ok = match( "nfinity", 7 );
+      break;
+   case 'N':
+      token.type_ = tokenNaN;
+      ok = match( "aN", 2 );
       break;
    case ',':
       token.type_ = tokenArraySeparator;
